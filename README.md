@@ -10,8 +10,8 @@ Contributing
 ------------
 This repository wants to be the mix of the 2 projects that have been working in order to deploy this idea. Here you can find the contributors and the original repository
 
-https://github.com/aksonuabhay/IS-Erle
-https://github.com/FaedDroneLogistics/gsoc15
+- https://github.com/aksonuabhay/IS-Erle
+- https://github.com/FaedDroneLogistics/gsoc15
 
 Prerequisites
 -------------
