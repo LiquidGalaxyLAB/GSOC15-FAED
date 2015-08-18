@@ -1,27 +1,30 @@
-#FAED
-
 Welcome to FAED project
 =======================
 
+The main idea of this project is to use a drone to bring flying an automated electronic defibrillator (AED) where a cardiac emergency is happening. This drone will have a support platform with an easy extraction system in order to get the AED as fast as possible. But sideways the project is the base block for any kind of drone based distribution project.
 
-
-*Note: We're currently very close to moving from Express to Loopback. As such, please keep in mind that the instructions here for setting up and running the project do not directly translate to the staging branch. Additionally, the file structure is quite a bit different. As always, the staging branch is the appropriate place to branch off of to fix/add something.*
+The web site was created to highlight our ideas and promotion: http://www.faeddroneproject.com/
 
 Wiki
 ------------
 
+
 We would love your help expanding our [wiki](https://github.com/freecodecamp/freecodecamp/wiki) with more information about learning to code and getting a coding job.
+
 
 Contributing
 ------------
+This repository wants to be the mix of the 2 projects that have been working in order to deploy this idea. Here you can find the contributors and the original repository
 
-
+https://github.com/aksonuabhay/IS-Erle
+https://github.com/FaedDroneLogistics/gsoc15
 
 Prerequisites
 -------------
 
-- [MongoDB](http://www.mongodb.org/downloads)
-- [Node.js](http://nodejs.org)
+- [InteractiveSpaces](http://www.interactive-spaces.org)
+- [LiquidGalaxy](https://code.google.com/p/liquid-galaxy/)
+- [DJango](https://www.djangoproject.com)
 
 Getting Started
 ---------------
