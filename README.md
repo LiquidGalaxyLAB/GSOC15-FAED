@@ -19,6 +19,8 @@ Prerequisites
 - [InteractiveSpaces](http://www.interactive-spaces.org)
 - [LiquidGalaxy](https://code.google.com/p/liquid-galaxy/)
 - [DJango](https://www.djangoproject.com)
+- [ROS](http://www.ros.org/)
+- [MAVLink](http://qgroundcontrol.org/mavlink/start)
 
 Getting Started
 ---------------
