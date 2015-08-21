@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<Style id="Red">
+			<LineStyle>
+				<width>1.5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>0ff000000</color>
+			</PolyStyle>
+		</Style>
+		<Placemark>
+			<name>La Seu Vella </name>
+			<description>Placa Hispanoamerica, 1, 25004 Lleida</description>
+			<styleUrl>#Red</styleUrl>
+			<Polygon>
+				<extrude>1</extrude>
+				<altitudeMode>relativeToGround</altitudeMode>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							0.6251358,41.6173115,200.0
+							0.6251358,41.6174115,200.0
+							0.6252358,41.6174115,200.0
+							0.6252358,41.6173115,200.0
+							0.6251358,41.6173115,200.0
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+	</Document>
+</kml>

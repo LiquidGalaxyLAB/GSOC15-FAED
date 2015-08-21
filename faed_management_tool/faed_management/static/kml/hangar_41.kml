@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<Style id="Red">
+			<LineStyle>
+				<width>1.5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>0ff000000</color>
+			</PolyStyle>
+		</Style>
+		<Placemark>
+			<name>Random</name>
+			<description>Random</description>
+			<styleUrl>#Red</styleUrl>
+			<Polygon>
+				<extrude>1</extrude>
+				<altitudeMode>relativeToGround</altitudeMode>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							0.65,41.0,200.0
+							0.65,41.0001,200.0
+							0.6501,41.0001,200.0
+							0.6501,41.0,200.0
+							0.65,41.0,200.0
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+	</Document>
+</kml>

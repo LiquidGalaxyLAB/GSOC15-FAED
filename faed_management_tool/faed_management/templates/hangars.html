@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+          <div class="container">
+
+        {% for city, hangars in hangars_city.iteritems %}
+        <h2 class="header">{{city}}</h2>
+        <ul class="collection">
+                        <div class="row">
+
+        {% for hangar in hangars %}
+                <div class="col l6 m6 s12">
+                    <div class="card">
+
+                            {% if hangar.is_available %}
+                                    <div class="card-content green">
+                            {% else %}
+                                    <div class="card-content red">
+                            {% endif %}
+                            <h4 class="activator grey-text text-darken-4">
+                            {{ hangar.name }}<i class="material-icons right">settings</i></h4>
+                            <p><strong>RADIUS:</strong> {{ hangar.radius }}</p>
+                            <p><strong>DRONE:</strong> {{ hangar.drone }}</p>
+                                </div>
+                        <div class="card-reveal">
+                                <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+                                <a href="edit_hangar/{{hangar.id}}" class=" square btn-floating btn-large waves-effect waves-light blue-grey darken-4" ><i class="material-icons">mode_edit</i></a>
+                                <a class="btn-floating btn-large waves-effect waves-light blue-grey darken-4 square" onclick="Materialize.toast('<span>Are you sure?</span><a class=&quot;btn-flat yellow-text&quot; href=/hangars/delete_hangar/{{hangar.id}}>Delete<a>', 5000)"><i class="material-icons" >delete</i></a>
+                        </div>
+                    </div>
+            </div>
+        {% endfor %}
+                                </div>
+
+                </ul>
+        {% endfor %}
+
+  <div class="fixed-action-btn" style="bottom: 60px; right: 24px;">
+                    <a class="btn-floating btn-large waves-effect waves-light amber darken-1 square" href="/hangarform"><i class="large material-icons">add</i></a>
+                </div>
+              </div>
+{% endblock content %}

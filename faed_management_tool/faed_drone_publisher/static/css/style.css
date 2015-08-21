@@ -1,0 +1,52 @@
+html{
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+
+
+
+       #map-canvas {
+ height: 100%;
+        margin: 0px;
+        padding: 0px
+
+       }
+
+     #menu-top{
+     height: 64px;
+     }
+
+     #mapa{
+     height:84%;
+     }
+
+
+   #outer {
+      float: left;
+      width: 400px;
+      overflow: auto;
+      white-space: nowrap;
+   }
+
+ body {
+ height: 100%;
+        margin: 0px;
+        padding: 0px
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+
+  footer{
+
+  width:100%;
+  position: absolute;
+  bottom:0;
+  left:0;
+  }

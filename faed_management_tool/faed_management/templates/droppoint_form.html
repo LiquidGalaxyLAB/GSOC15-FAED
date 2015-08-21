@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container" style="margin-top:3%;">
+        <div class="row">
+            <form class="col s12" method="post" enctype="multipart/form-data" action="">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="row">
+                    <div class="input-field col l8">
+                        {{ form.name.error }}
+                        <label for="name" data-error="wrong" data-success="right">Nom</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="input-field col l4">
+                        {% if form.is_available.value %}
+                            <input id="is_available" name="is_available" type="checkbox" class="validate teal-text text-darken-3" checked="checked">
+                        {% else  %}
+                            <input id="is_available" name="is_available" type="checkbox" class="validate teal-text text-darken-3">
+                        {% endif %}
+                        <label for="is_available">Availability</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col l4 m4 s12">
+                        <label for="latitude">Latitude</label>
+                        {{ form.latitude }}
+                    </div>
+                    <div class="input-field col l4 m4 s12">
+                        {{ form.longitude }}
+                        <label for="longitude">Longitude</label>
+                    </div>
+                    <div class="input-field col l4 m4 s12">
+                        {{ form.altitude}}
+                        <label for="altitude">Altitude</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col l6 s12">
+                        {{ form.style_url }}
+                        <a class="material-icons" href="/styleurlform" target="_blank">add</a>
+                    </div>
+                    <div class="input-field col l6 s12">
+                        {{ form.city }}
+                        <a class="material-icons" href="/cityform" target="_blank">add</a>
+                    </div>
+                </div>
+
+                                <div id="map-canvas" style="height:300px; margin-bottom:5%;"></div>
+
+
+                <div class="row">
+                    <div class="input-field col s6">
+                        <label for="description">Description</label>
+                        {{ form.description }}
+                    </div>
+                    <button class="waves-effect waves-light btn-large green" name="action" type="submit">
+                        <i class="material-icons right">send</i>Save
+                    </button>
+                    <a href="/droppoints" class="waves-effect waves-light btn-large red">
+                        <i class="material-icons right">cancel</i>Cancel</a>
+                </div>
+
+                {% include "mapsForm.html" %}
+
+
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

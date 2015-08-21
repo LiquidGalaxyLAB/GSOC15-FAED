@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <form class="col s12" method="post" enctype="multipart/form-data" action="">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {{ form.as_p }}
+
+
+                    <button class="waves-effect waves-light btn-large green" name="action" type="submit">
+                        <i class="material-icons right">send</i>SAVE
+                    </button>
+
+            </form>
+        </div>
+    </div>
+{% endblock content %}

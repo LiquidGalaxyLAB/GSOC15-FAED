@@ -1,0 +1,36 @@
+{% extends "base_drone.html" %}
+{% block content %}
+
+ <div id="container " >
+     <div class="row center-align">
+        <img src="/static/img/faedproject.png" />
+     </div>
+     <div class="center-align col s12">
+            <p style="margin:0;"><i class="small material-icons">assignment</i></p>
+            <strong style="margin:0;">LICENSE PLATE</strong>
+            <p style="margin:0;">{{ drone.plate }}</p>
+     </div>
+
+    <div class="row center-align" style="margin-bottom:0px; margin-top:-20px;">
+        <div class="col s6">
+            <p style="margin-bottom:0;"><i class="small material-icons ">room</i></p>
+            <strong style="margin:0;">Origin</strong>
+            <p style="margin:0;">41.604445, 0.606581</p>
+        </div>
+        <div class="col s6">
+                <p style="margin-bottom:0;"><i class="small material-icons">room</i></p>
+                <strong style="margin:0;">Drop</strong>
+                <p style="margin:0;">41.018372, 0.733948</p>
+        </div>
+    </div>
+     <div class="row center-align" style="margin-top:-10px;">
+         <p style="margin-bottom:0;"><i class="small material-icons">report_problem</i></p>
+        <strong style="margin:0;">{{ drone.emergency }}</strong>
+     </div>
+     <div class="row center-align">
+         <p style="margin:0;"><i class="small material-icons">settings_power</i></p>
+         <strong>{{ drone.battery_life }}%</strong>
+    </div>
+</div>
+
+{% endblock content %}

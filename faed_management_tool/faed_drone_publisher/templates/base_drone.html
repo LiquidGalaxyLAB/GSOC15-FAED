@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+
+        <!--Import materialize.css -->
+        <link type="text/css" rel="stylesheet" href="/static/css/materialize.min.css" media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/static/css/style.css" media="screen,projection"/>
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="/static/js/materialize.min.js"></script>
+        <script type="text/javascript" src="/static/js/drones.js"></script>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <title>FAED</title>
+
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    </head>
+    <body>
+        <div id="menu-top">
+             <nav style="position: fixed;">
+             </nav>
+        </div>
+
+
+        {% block content %}
+        {% endblock content %}
+
+    </body>
+    <footer class="page-footer" style="position: fixed;">
+
+          <div class="footer-copyright">
+            <div class="container">
+            © 2015 Open Source
+            <a class="grey-text text-lighten-4 right" href="http://www.faeddroneproject.com/">FAED Project</a>
+            </div>
+          </div>
+    </footer>
+</html>

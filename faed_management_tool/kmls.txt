@@ -1,0 +1,3 @@
+faed_management/static/kml/test.kml
+faed_management/static/kml/test1.kml
+faed_management/static/kml/test2.kml

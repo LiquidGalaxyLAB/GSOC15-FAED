@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <form class="col s12" method="post" enctype="multipart/form-data" action="">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s6">
+                    {{ form.name.error }}
+                    <label for="name" data-error="wrong" data-success="right">Nom</label>
+                    {{ form.name }}
+                </div>
+                <div class="input-field col s6">
+                    {{ form.href }}
+                    <label for="href">URL</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    {{ form.scale }}
+                    <label for="scale">Scale</label>
+                </div>
+                <button class="waves-effect waves-light btn-large green" name="action" type="submit">
+                        <i class="material-icons right">send</i>SAVE
+                </button>
+             </div>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container" style="margin-top:3%;">
+        <div class="row">
+            <form class="col s12" method="post" enctype="multipart/form-data" action="">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="row">
+                    <div class="input-field col l8 s12">
+                        {{ form.name.error }}
+                         <i class="material-icons prefix">satellite</i>
+                        <label for="name" data-error="wrong" data-success="right">Name</label>
+                        {{ form.name }}
+                    </div>
+                    <div class="input-field col l3">
+                        {% if form.is_available.value %}
+                            <input id="is_available" name="is_available" type="checkbox" class="validate teal-text text-darken-3" checked="checked">
+                        {% else  %}
+                            <input id="is_available" name="is_available" type="checkbox" class="validate teal-text text-darken-3">
+                        {% endif %}
+                        <label for="is_available">Availability</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col l4 m6 s12">
+                        <i class="material-icons prefix">swap_horiz</i>
+                        <label for="latitude">Latitude</label>
+                        {{ form.latitude }}
+                    </div>
+                    <div class="input-field col l4 m6 s12">
+                        <i class="material-icons prefix">swap_vert</i>
+                        <label for="longitude">Longitude</label>
+                        {{ form.longitude }}
+                    </div>
+                    <div class="input-field col l4 m6 s12">
+                        <i class="material-icons prefix">vertical_align_top</i>
+                        <label for="altitude">Altitude</label>
+                        {{ form.altitude}}
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="input-field col l6 m12 s12">
+                        {{ form.style_url }}
+                        <a class="material-icons" href="/styleurlform" target="_blank">add</a>
+                    </div>
+                    <div class="input-field col l6 m12 s12">
+                        {{ form.city }}
+                        <a class="material-icons" href="/cityform" target="_blank">add</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <label for="description">Description</label>
+                        {{ form.description }}
+                    </div>
+
+                    <button class="waves-effect waves-light btn-large" name="action" type="submit">
+                        <i class="material-icons right">send</i>Guardar
+                    </button>
+                    <a href="/meteostations" class="waves-effect waves-light btn-large">
+                        <i class="material-icons right">cancel</i>Cancel</a>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

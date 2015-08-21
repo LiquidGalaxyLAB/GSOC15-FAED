@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+	<div class="fixed-action-btn" style="top: 60px; right: 25px;">
+    	<a class="btn-floating btn-large red">
+    	  <i class="large material-icons">layers</i>
+   		</a>
+    <ul>
+      <li class="hangar"><a class="btn-floating waves-effect waves-light yellow darken-1"><i class="material-icons">open_with</i></a></li>
+      <li class="droppoint"><a class="btn-floating waves-effect waves-light green test"><i class="material-icons">pin_drop</i></a></li>
+      <li class="meteostations"><a class="btn-floating  waves-effect waves-lightblue"><i class="material-icons">satellite</i></a></li>
+    </ul>
+  </div>
+<div id="mapa">
+    <div id="map-canvas"></div>
+</div>
+
+{% endblock content %}

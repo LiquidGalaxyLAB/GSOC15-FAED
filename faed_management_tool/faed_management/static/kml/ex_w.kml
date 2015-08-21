@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+xmlns:gx="http://www.google.com/kml/ext/2.2">
+  <Placemark>
+    <name>Weather Station Lleida</name>
+    <gx:balloonVisibility>1</gx:balloonVisibility>
+    <description><![CDATA[
+
+<p><font size=5><b>Temperature</b> -</font></p>
+<p><font size=5 color="blue"><b>Temperature max. - </b></font></p>
+<p><font size=5 color="red"><b>Temperature min. -</b></font></p>
+
+<p><font size=5><b>Wind - </b></font></p>
+<p><font size=5><b>Clouds - </b></font></p>
+<p><font size=5><b>Pressure - </b></font></p>
+<p><font size=5><b>Humidity - </b></font></p>
+
+
+<hr>
+Location:<br>
+<p><font size=5><b>Latitude - </b></font></p>
+<p><font size=5><b>Longitude - </b></font></p>
+<p><font size=5><b>Sky status - </b></font></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<hr>
+</br>
+<font face=arial>Arial</font><br>
+]]></description>
+    <Point>
+      <coordinates>-122.0822035425683,37.42228990140251,0</coordinates>
+    </Point>
+  </Placemark>
+</kml>
