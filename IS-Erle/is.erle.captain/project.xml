@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project type="activity" builder="java">
+  <name>Is Erle Captain</name>
+  <description>
+    It will act as the captain of the mission. It will arm/disarm the motors, 
+    it will make sure that all of the text file has been transmitted before letting the drone fly.
+    It will see drone's neighbourhood, battery status, current and planned course and all other 
+    things which a drone pilot has to do to maintain the safety of the drone and its surroundings.
+  </description>
+
+  <identifyingName>is.erle.captain</identifyingName>
+  <version>1.0.0</version>
+
+  <activity type="interactivespaces_native">
+    <name>is.erle.captain</name>
+    <class>is.erle.captain.IsErleCaptainActivity</class>
+
+    <configuration>
+    	<property name="space.activity.ros.node.name" value="captain" />
+    	
+      <property name="space.activity.routes.outputs" value="output:rc_output" />
+      <property name="space.activity.route.output.rc_output" value="captain/rc_output" />
+      <property name="space.activity.route.output.output" value="captain/output" />
+      <property name="space.activity.routes.inputs" value="input:heartbeat:WP_Processor"/>
+      <property name="space.activity.route.input.input" value="captain/input"/>
+      
+      <property name="space.activity.route.input.heartbeat" value="mavlink/heartbeat"/>
+      
+      <property name="space.activity.route.input.WP_Processor" value="waypoint/processor/output"/>
+      
+      <property name="space.activity.log.level" required="false">
+        <value>info</value>
+      </property>
+    </configuration>
+  </activity>
+</project>

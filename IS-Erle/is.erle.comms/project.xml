@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<project type="activity" builder="java">
+  <name>Is Erle Comms</name>
+  <description>
+    This is the communication layer of the project. It will receive data to send from mavlink activity and send it to the drone. 
+    Also it will receive data from the drone and it will publish it. Mavlink will process this data and put it on several relevant topics to 
+    be used by other activities.
+  </description>
+
+  <identifyingName>is.erle.comms</identifyingName>
+  <version>1.0.0</version>
+
+  <activity type="interactivespaces_native">
+    <name>is.erle.comms</name>
+    <class>is.erle.comms.IsErleCommsActivity</class>
+
+    <configuration>
+      
+       <property name = "space.comm.udp.server.port" required = "true" >
+      	<value>6000</value>
+       </property>
+      
+      <property name="space.activity.ros.node.name" value="comms" />
+      <property name="space.activity.routes.outputs" value="output" />
+      <property name="space.activity.route.output.output" value="comms/output" />
+      
+      <property name="space.activity.routes.inputs" value="input"/>
+      <property name="space.activity.route.input.input" value="comms/input"/>
+      
+      <property name="space.activity.log.level" required="false">
+        <value>info</value>
+      </property>
+    </configuration>
+  </activity>
+</project>

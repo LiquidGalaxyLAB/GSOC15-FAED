@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project type="activity" builder="java">
+  <name>Is Erle Waypoint Processor</name>
+  <description>
+    This activity will take a text file from FAED Mesh data. This activity will act as a bridge between waypoint reader and FAED Mesh. 
+    The text file will keep checking the temporary data directory of the controller for a mission file. Once the file is found/updated,
+    it sends start signal to the captain activity.
+  </description>
+
+  <identifyingName>is.erle.waypoint.processor</identifyingName>
+  <version>1.0.0</version>
+
+  <activity type="interactivespaces_native">
+    <name>is.erle.waypoint.processor</name>
+    <class>is.erle.waypoint.processor.IsErleWaypointProcessorActivity</class>
+
+    <configuration>
+    
+      <property name="space.activity.ros.node.name" value="waypoint/processor" />
+      <property name="space.activity.routes.outputs" value="output" />
+      <property name="space.activity.route.output.output" value="waypoint/processor/output" />
+      
+      <property name="space.activity.routes.inputs" value="input"/>
+      <property name="space.activity.route.input.input" value="waypoint/processor/input"/>
+    
+      <property name="space.activity.log.level" required="false">
+        <value>info</value>
+      </property>
+    </configuration>
+  </activity>
+</project>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<project type="activity" builder="java">
+  <name>Is Erle Lg</name>
+  <description>
+    This activity will take care of the visualization of the drone's data. It will subscribe to all the data to be shown on the Liquid Galaxy system and then put the data on the Liquid Galaxy System.
+  </description>
+
+  <identifyingName>is.erle.lg</identifyingName>
+  <version>1.0.0</version>
+
+  <activity type="interactivespaces_native">
+    <name>is.erle.lg</name>
+    <class>is.erle.lg.IsErleLgActivity</class>
+
+    <configuration>
+      <property name="space.activity.log.level" required="false">
+        <value>info</value>
+      </property>
+    </configuration>
+  </activity>
+</project>

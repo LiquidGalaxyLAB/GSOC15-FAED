@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<project type="activity" builder="java">
+  <name>Is Erle Mavlink</name>
+  <description>
+    This activity will subscribe to 3 channels one from waypoint processor, one from captain activity and one from comms. It will take the waypoint payload data and
+    make it Mavlink understandable. It will then publish this data on comms. It will also be subscribing comms, it will parse all the data into
+    releavant fields and then publish it on relevant topics. The incoming data will have imu, compass, gps, battery, barometer etc data, it will all get separated and published on individual topics.
+  </description>
+
+  <identifyingName>is.erle.mavlink</identifyingName>
+  <version>1.0.0</version>
+
+  <activity type="interactivespaces_native">
+    <name>is.erle.mavlink</name>
+    <class>is.erle.mavlink.IsErleMavlinkActivity</class>
+
+    <configuration>
+    
+      <property name="space.activity.ros.node.name" value="mavlink" />
+      
+      
+      <property name="space.activity.routes.outputs" value="outputCOM_M:outputWP_M:outputGeneral_M:captain:heartbeat:hud:attitude:status:time:gps:imu:scaled_pressure:global_position:local_position:servo_output:rc_input:current_mission_seq:nav_controller_output:terrain_report" />
+      <property name="space.activity.route.output.outputCOM_M" value="comms/input" />
+      
+      <property name="space.activity.routes.inputs" value="inputCOM_M:inputWP_M:captain:rc_output"/>
+      <property name="space.activity.route.input.inputCOM_M" value="comms/output"/>
+      <property name="space.activity.route.input.rc_output" value="captain/rc_output"/>
+      
+      <property name="space.activity.route.output.outputWP_M" value="waypoint/input" />
+      
+      <property name="space.activity.route.input.inputWP_M" value="waypoint/output"/>
+      
+      
+      <property name="space.activity.route.output.outputGeneral_M" value="mavlink/output" />
+      
+      <property name="space.activity.route.output.captain" value="captain/input" />
+      <property name="space.activity.route.input.captain" value="captain/output" />
+      
+      <property name="space.activity.route.output.heartbeat" value="mavlink/heartbeat" />
+      <property name="space.activity.route.output.hud" value="mavlink/hud" />
+      <property name="space.activity.route.output.attitude" value="mavlink/attitude" />
+      <property name="space.activity.route.output.status" value="mavlink/system/status" />
+      <property name="space.activity.route.output.time" value="mavlink/system/time" />
+      <property name="space.activity.route.output.gps" value="mavlink/sensors/gps" />
+      <property name="space.activity.route.output.imu" value="mavlink/sensors/imu" />
+      <property name="space.activity.route.output.scaled_pressure" value="mavlink/sensors/pressure" />
+      <property name="space.activity.route.output.global_position" value="mavlink/position/global" />
+      <property name="space.activity.route.output.local_position" value="mavlink/position/local" />
+      <property name="space.activity.route.output.servo_output" value="mavlink/servoOutput" />
+      <property name="space.activity.route.output.rc_input" value="mavlink/rcInput" />
+      <property name="space.activity.route.output.current_mission_seq" value="mavlink/current_mission_seq" />
+      <property name="space.activity.route.output.nav_controller_output" value="mavlink/controller/nav" />
+      <property name="space.activity.route.output.terrain_report" value="mavlink/terrainReport" />
+      
+      <property name="space.activity.log.level" required="false">
+        <value>info</value>
+      </property>
+    </configuration>
+  </activity>
+  
+  <resources>
+    <resource sourceFile="src/main/Resources/ParameterMetaDataBackup.xml" />
+  </resources>
+</project>
