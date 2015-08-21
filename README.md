@@ -27,9 +27,14 @@ The easiest way to get started is to clone the repository:
 
 ```bash
 # Get the latest snapshot
-git clone 
+git clone https://github.com/LiquidGalaxyLAB/FAED.git
+cd FAED
+./startup.sh
+pip install -r requirements.txt 
 
 ```
+
+Then, in order to install GeoDjango dependencies (they do not have a 'pip' command), visit their [website](https://docs.djangoproject.com/en/1.8/ref/contrib/gis/install/) and follow the given instructions.
 
 
 License
