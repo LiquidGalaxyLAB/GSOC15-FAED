@@ -28,7 +28,7 @@ The easiest way to get started is to clone the repository:
 ```bash
 # Get the latest snapshot
 git clone https://github.com/LiquidGalaxyLAB/FAED.git
-cd FAED
+cd FAED/faed_management_tool
 ./startup.sh
 pip install -r requirements.txt 
 
