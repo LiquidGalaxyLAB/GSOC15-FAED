@@ -80,7 +80,7 @@ function loadHangars(){
 
 var hangar = {}
 
-var url = "http://localhost:8000/api/hangars/?format=json";
+var url = "http://127.0.0.1:8000/api/hangars/?format=json";
 
 $.getJSON( url, function( data ) {
   var items = [];
@@ -109,7 +109,7 @@ function loadDroppoints(){
 
 var droppoint = {}
 
-var url = "http://localhost:8000/api/droppoints/?format=json";
+var url = "http://127.0.0.1:8000/api/droppoints/?format=json";
 
 $.getJSON( url, function( data ) {
   var items = [];

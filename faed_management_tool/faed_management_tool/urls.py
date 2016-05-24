@@ -69,5 +69,6 @@ urlpatterns = [
 
 
     url(r'^incidence/$', views.find_emergency_path),
+    url(r'^probeta/$', views.test_ip),
 
 ]
