@@ -377,21 +377,22 @@ def delete_kml(id, type):
 def find_emergency_path(request):
     MAX_WIND_SPEED = 10.0
 
-    url = 'http://api.openweathermap.org/data/2.5/weather?q=Lleida&units=metric'
-    response = requests.get(url=url)
-    data = json.loads(response.text)
-
-    try:
-        if data['wind']['speed'] >= MAX_WIND_SPEED or bool(data['rain']):
-            print data['rain']
-            print data['wind']['speed']
-            return HttpResponse(status=503)
-    except KeyError:
-        pass
+    # url = 'http://api.openweathermap.org/data/2.5/weather?q=Lleida&units=metric'
+    # response = requests.get(url=url)
+    # data = json.loads(response.text)
+    #
+    # try:
+    #     if data['wind']['speed'] >= MAX_WIND_SPEED or bool(data['rain']):
+    #         print data['rain']
+    #         print data['wind']['speed']
+    #         return HttpResponse(status=503)
+    # except KeyError:
+    #     pass
 
     lat = request.GET.get('lat', '')
     lon = request.GET.get('lng', '')
-    path = os.path.dirname(__file__) + "/static/kml/"
+
+
 
     last_distance = sys.maxint
     all_hangars = models.Hangar.objects.all()
@@ -422,24 +423,36 @@ def find_emergency_path(request):
     if not selected_hangar.is_available:
         return HttpResponse(status=503)
 
-    kml_generator.weather_info(os.path.dirname(__file__) + "/static/kml/meteo_info.kml",
-                               data['main']['temp'], data['main']['temp_max'], data['main']['temp_min'],
-                               data['wind']['speed'], data['clouds']['all'], data['main']['pressure'],
-                               data['main']['humidity'], data['weather'][0]['description'])
+    # kml_generator.weather_info(os.path.dirname(__file__) + "/static/kml/meteo_info.kml",
+    #                            data['main']['temp'], data['main']['temp_max'], data['main']['temp_min'],
+    #                            data['wind']['speed'], data['clouds']['all'], data['main']['pressure'],
+    #                            data['main']['humidity'], data['weather'][0]['description'])
+
+    incidence = models.Incidence(lat=lat, long=lon, dropPoint=selected_droppoint, hangar=selected_hangar, is_active=True)
+    incidence.save()
+
+    path = os.path.dirname(__file__) + "/static/kml/"
+    incidence_name = "incidence_"+str(incidence.id)+".kml"
 
     # generate_mission_file(selected_hangar)
-    kml_generator.create_emergency_marker(lat, lon, path + "incidence.kml")
-    Kml(name="incidence.kml", url="static/kml/incidence.kml", visibility=True).save()
+    kml_generator.create_emergency_marker(lat, lon, path + incidence_name)
+    # Kml(name=incidence_name, url="static/kml/"+incidence_name, visibility=True).save()
     # sync_kmls_file()
     # sync_kmls_to_galaxy(emergency=True)
-    kml_generator.find_drone_path(selected_hangar, selected_droppoint, path)
+    kml_generator.find_drone_path(selected_hangar, selected_droppoint, path, incidence.id)
 
-    Kml.objects.get(name="incidence.kml").delete()
-    os.remove(path + "incidence.kml")
+    # Kml.objects.get(name=incidence_name).delete()
+    incidence.is_active = False
+    incidence.save()
+    os.remove(path + "manage"+str(incidence.id)+".kml")
+    os.remove(path + "incidence_"+str(incidence.id)+".kml")
+    os.remove(path + "in"+str(incidence.id)+"drone.kml")
 
-    for step in range(0, 34, 1):
-        Kml.objects.get(name="drone_" + str(step) + ".kml").delete()
-        os.remove(path + "drone_" + str(step) + ".kml")
+    #Call sendtoGalaxy to delete visualization of the last kml of a travel
+
+    # for step in range(0, 34, 1):
+    #     Kml.objects.get(name="drone_" + str(step) + ".kml").delete()
+    #     os.remove(path + "drone_" + str(step) + ".kml")
 
     # sync_kmls_file()
     # sync_kmls_to_galaxy(emergency=True)

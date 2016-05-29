@@ -26,6 +26,8 @@ class Command(BaseCommand):
             if pattern.match(parsed_ip):
                 write_ip(parsed_ip);
                 self.stdout.write(self.style.SUCCESS('Successfully changed the ip to "%s"' % parsed_ip))
+                os.system("mkdir /tmp/kml")
+                os.system("touch /tmp/kml/kmls.txt")
                 if not options['addrport']:
                     os.system("python manage.py runserver")
                 else:
