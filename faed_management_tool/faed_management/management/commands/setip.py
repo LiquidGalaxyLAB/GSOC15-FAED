@@ -21,9 +21,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             parsed_ip = options['ip']
-            pattern = re.compile("^([m01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            patternIp = re.compile("^([m01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                                  "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$")
-            if pattern.match(parsed_ip):
+            patternIpAddr = re.compile("^([m01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                                 "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5]):"+
+                                       "(\d{1,5})$")
+            if patternIp.match(parsed_ip) or patternIpAddr.match(parsed_ip):
                 write_ip(parsed_ip);
                 self.stdout.write(self.style.SUCCESS('Successfully changed the ip to "%s"' % parsed_ip))
                 os.system("mkdir /tmp/kml")

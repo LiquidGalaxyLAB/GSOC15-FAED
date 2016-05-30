@@ -392,8 +392,6 @@ def find_emergency_path(request):
     lat = request.GET.get('lat', '')
     lon = request.GET.get('lng', '')
 
-
-
     last_distance = sys.maxint
     all_hangars = models.Hangar.objects.all()
     selected_hangar = None
@@ -428,27 +426,24 @@ def find_emergency_path(request):
     #                            data['wind']['speed'], data['clouds']['all'], data['main']['pressure'],
     #                            data['main']['humidity'], data['weather'][0]['description'])
 
-    incidence = models.Incidence(lat=lat, long=lon, dropPoint=selected_droppoint, hangar=selected_hangar, is_active=True)
+    incidence = models.Incidence(lat=lat, long=lon, dropPoint=selected_droppoint, drone=hangar.drone,
+                                 hangar=selected_hangar, is_active=True)
     incidence.save()
 
     path = os.path.dirname(__file__) + "/static/kml/"
-    incidence_name = "incidence_"+str(incidence.id)+".kml"
+    incidence_name = "incidence_" + str(incidence.id) + ".kml"
 
     # generate_mission_file(selected_hangar)
     kml_generator.create_emergency_marker(lat, lon, path + incidence_name)
     # Kml(name=incidence_name, url="static/kml/"+incidence_name, visibility=True).save()
     # sync_kmls_file()
     # sync_kmls_to_galaxy(emergency=True)
-    kml_generator.find_drone_path(selected_hangar, selected_droppoint, path, incidence.id)
+    kml_generator.find_drone_path(selected_hangar, selected_droppoint, path, incidence)
 
     # Kml.objects.get(name=incidence_name).delete()
-    incidence.is_active = False
-    incidence.save()
-    os.remove(path + "manage"+str(incidence.id)+".kml")
-    os.remove(path + "incidence_"+str(incidence.id)+".kml")
-    os.remove(path + "in"+str(incidence.id)+"drone.kml")
 
-    #Call sendtoGalaxy to delete visualization of the last kml of a travel
+
+    # Call sendtoGalaxy to delete visualization of the last kml of a travel
 
     # for step in range(0, 34, 1):
     #     Kml.objects.get(name="drone_" + str(step) + ".kml").delete()

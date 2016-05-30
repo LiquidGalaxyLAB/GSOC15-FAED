@@ -95,4 +95,4 @@ class Incidence(models.Model):
     is_active = models.BooleanField(default=True)
     dropPoint = models.ForeignKey(DropPoint)
     hangar = models.ForeignKey(Hangar)
-    # drone = models.ForeignKey(Drone)
+    drone = models.ForeignKey(Drone, null=True)

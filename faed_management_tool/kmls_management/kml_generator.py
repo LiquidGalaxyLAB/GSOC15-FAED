@@ -1,7 +1,7 @@
 import math
 import time
 import random
-
+import os
 import geopy
 import simplekml
 from polycircles import polycircles
@@ -245,68 +245,43 @@ def calculate_initial_compass_bearing(geo_point_origin, geo_point_destiny):
 
     return compass_bearing
 
-
-def find_drone_path(hangar, droppoint, path_name, id_incidence, is_returning=False):
-    geo_point_origin = (hangar.latitude, hangar.longitude)
-    geo_point_destiny = (droppoint.latitude, droppoint.longitude)
-    file_path = path_name + "in" + str(id_incidence) + "drone.kml"
+def find_drone_path(origin, destiny, path_name, incidence, is_returning=False):
+    geo_point_origin = (origin.latitude, origin.longitude)
+    geo_point_destiny = (destiny.latitude, destiny.longitude)
+    file_path = path_name + "in" + str(incidence.id) + "drone.kml"
     dist = geopy.distance.distance(geo_point_origin, geo_point_destiny).kilometers
-    ip_server = get_server_ip()
-    url_file = "http://" + str(ip_server)[0:(len(ip_server) - 1)] + ":8000/static/kml/" + "in" + str(id_incidence) + "drone.kml" + "\n"
     bearing = calculate_initial_compass_bearing(geo_point_origin, geo_point_destiny)
-    manage_dron_route_kml(path_name + "manage" + str(id_incidence), url_file)
-    drone_to_galaxy()
-    print file_path
-    print url_file
-    # time.sleep(5)
+    create_dron_manage_route(path_name, incidence.id)
     steps = 20
-    num_steps = steps
-    step = 0
-    altitude = hangar.altitude
-
-    # Drone taking off
-    while step <= 6:
-        placemark_kml(hangar.drone,
-                      (geo_point_origin[0], geo_point_origin[1], altitude), file_path)
-        # Kml(name=file_name, url=kml_path+file_name, visibility=True).save()
-        altitude += 25
-        step += 1
-        time.sleep(1)
-        # drone_to_galaxy()
-
+    if is_returning:
+        altitude = destiny.altitude
+    else:
+        altitude = origin.altitude
     lat = geo_point_origin[0]
     lon = geo_point_origin[1]
-    placemark_kml(hangar.drone, (geo_point_origin[0], geo_point_origin[1], altitude), file_path)
-    # Kml(name=kml_path+file_name, url=kml_path+file_name, visibility=True).save()
-    step += 1
-    time.sleep(1)
-    # drone_to_galaxy()
 
-    # Drone route
-    while num_steps > 0:
+    for i in range(8):
+        placemark_kml(incidence.drone, (geo_point_origin[0], geo_point_origin[1], altitude), file_path)
+        altitude += 25
+        time.sleep(1)
+
+    for i in range(steps):
         destination = VincentyDistance(kilometers=dist / steps).destination(geopy.Point(lat, lon), bearing)
         lat, lon = destination.latitude, destination.longitude
-        placemark_kml(hangar.drone, (lat, lon, altitude), file_path)
-        # Kml(name="drone_" + str(step) + ".kml", url="static/kml/drone_" + str(step) + ".kml", visibility=True).save()
-        num_steps -= 1
-        step += 1
+        placemark_kml(incidence.drone, (lat, lon, altitude), file_path)
         time.sleep(1)
-        # drone_to_galaxy()
 
-    # Drone landing
-    while step <= 33:
-        placemark_kml(hangar.drone, (lat, lon, altitude), file_path)
-        # Kml(name="drone_" + str(step) + ".kml", url="static/kml/drone_" + str(step) + ".kml", visibility=True).save()
+    for i in range(8):
+        placemark_kml(incidence.drone, (lat, lon, altitude), file_path)
         altitude -= 25
-        step += 1
         time.sleep(1)
-        # drone_to_galaxy()
 
     print "Finished"
-    # time.sleep(5)
-    # if not is_returning:
-        #Make incidence clear or something like this
-        # find_drone_path(droppoint, hangar, path_name, id_incidence, True)
+    time.sleep(5)
+    if not is_returning:
+        find_drone_path(destiny, origin, path_name, incidence, True)
+    else:
+        delete_incidence(incidence, path_name)
 
 
 def drone_to_galaxy():
@@ -314,6 +289,14 @@ def drone_to_galaxy():
     sync_kmls_to_galaxy(emergency=True)
     time.sleep(1.5)
 
+
+def delete_incidence(incidence, path):
+    incidence.is_active = False
+    incidence.save()
+    os.remove(path + "manage" + str(incidence.id) + ".kml")
+    os.remove(path + "incidence_" + str(incidence.id) + ".kml")
+    os.remove(path + "in" + str(incidence.id) + "drone.kml")
+    sync_kmls_file()
 
 def weather_info(filename, temp, temp_max, temp_min, wind, cloud, pressure, humidity, description):
     with open(filename, "w") as kml_file:
@@ -354,3 +337,12 @@ def weather_info(filename, temp, temp_max, temp_min, wind, cloud, pressure, humi
 def random_color():
     r = lambda: random.randint(0, 255)
     return '%02X%02X%02X%02X' % (r(), r(), r(), r())
+
+
+def create_dron_manage_route(path_name, id):
+    ip_server = get_server_ip()
+    url_file = "http://" + str(ip_server)[0:(len(ip_server) - 1)] + ":8000/static/kml/" + "in" + str(id) + "drone.kml" + "\n"
+    manage_dron_route_kml(path_name + "manage" + str(id), url_file)
+    print url_file
+    drone_to_galaxy()
+    time.sleep(2)
