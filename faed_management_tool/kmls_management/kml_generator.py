@@ -14,6 +14,7 @@ from faed_management.static.py_func.sendtoLG import get_server_ip
 
 kml_path = "/static/kml"
 
+
 def placemark_kml(drone, geo_point, filename):
     with open(filename, "w") as kml_file:
         kml_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -43,7 +44,7 @@ def placemark_kml(drone, geo_point, filename):
 
 
 def manage_dron_route_kml(filename, url):
-    with open(filename+".kml", "w") as kml_file:
+    with open(filename + ".kml", "w") as kml_file:
         kml_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                        + "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n"
                        + "\t<Document>\n"
@@ -51,7 +52,7 @@ def manage_dron_route_kml(filename, url):
                        + "\t\t\t<Link>\n"
                        + "\t\t\t\t<href>" + url + "</href>\n"
                        + "\t\t\t\t<refreshMode>onInterval</refreshMode>\n"
-                       + "\t\t\t\t<refreshInterval>1</refreshInterval>\n"
+                       + "\t\t\t\t<refreshInterval>0.5</refreshInterval>\n"
                        + "\t\t\t</Link>\n"
                        + "\t\t</NetworkLink>\n"
                        + "\t</Document>\n"
@@ -196,18 +197,18 @@ def create_droppoint_marker(placemark, filename):
                        + "</kml>")
 
 
-def create_emergency_marker(latitude, longitude, filename):
+def create_emergency_marker(incidence, filename):
     with open(filename, "w") as kml_file:
         kml_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                        + "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n"
                        + "\t<Placemark>\n"
                        + "\t\t<name>FAED</name>\n"
                        + "\t\t<visibility>1</visibility>\n"
-                       + "\t\t<description>Incidence</description>\n"
+                       + "\t\t<description>" + 'Incidence' if incidence.is_active else 'resolved' + "</description>\n"
                        + "\t\t<Style>\n"
                        + "\t\t\t<IconStyle>\n"
                        + "\t\t\t\t<Icon>\n"
-                       + "\t\t\t\t\t<href>http://maps.google.com/mapfiles/kml/shapes/caution.png</href>\n"
+                       + "\t\t\t\t\t<href>" + 'http://maps.google.com/mapfiles/kml/shapes/caution.png' if incidence.is_active else 'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png' + "</href>\n"
                        + "\t\t\t\t\t<scale>100</scale>\n"
                        + "\t\t\t\t</Icon>\n"
                        + "\t\t\t</IconStyle>\n"
@@ -218,7 +219,7 @@ def create_emergency_marker(latitude, longitude, filename):
                        + "\t\t<Point>\n"
                        + "\t\t\t<extrude>1</extrude>\n"
                        + "\t\t\t<altitudeMode>relativeToGround</altitudeMode>\n"
-                       + "\t\t\t<coordinates>" + str(longitude) + "," + str(latitude) + "," + str(200)
+                       + "\t\t\t<coordinates>" + str(incidence.long) + "," + str(incidence.lat) + "," + str(200)
                        + "</coordinates>\n"
                        + "\t\t</Point>\n"
                        + "\t</Placemark>\n"
@@ -245,12 +246,26 @@ def calculate_initial_compass_bearing(geo_point_origin, geo_point_destiny):
 
     return compass_bearing
 
+
 def find_drone_path(origin, destiny, path_name, incidence, is_returning=False):
     geo_point_origin = (origin.latitude, origin.longitude)
     geo_point_destiny = (destiny.latitude, destiny.longitude)
     file_path = path_name + "in" + str(incidence.id) + "drone.kml"
+    Kml(name="in" + str(incidence.id) + "drone.kml", url=file_path).save()
     dist = geopy.distance.distance(geo_point_origin, geo_point_destiny).kilometers
     bearing = calculate_initial_compass_bearing(geo_point_origin, geo_point_destiny)
+    if not is_returning:
+        Kml(name="incidence_" + str(incidence.id) + ".kml", url=path_name + "incidence_" + str(incidence.id) + ".kml",
+            visibility=True).save()
+        create_emergency_marker(incidence, path_name + "incidence_" + str(incidence.id) + ".kml")
+        sync_kml_galaxy()
+    else:
+        os.remove(path_name + "incidence_" + str(incidence.id) + ".kml")
+        Kml.objects.filter(name="incidence_" + str(incidence.id) + ".kml").delete()
+        Kml(name="s_incidence_" + str(incidence.id) + ".kml",
+            url=path_name + "s_incidence_" + str(incidence.id) + ".kml").save()
+        create_emergency_marker(incidence, path_name + "s_incidence_" + str(incidence.id) + ".kml")
+        sync_kml_galaxy()
     create_dron_manage_route(path_name, incidence.id)
     steps = 20
     if is_returning:
@@ -284,7 +299,7 @@ def find_drone_path(origin, destiny, path_name, incidence, is_returning=False):
         delete_incidence(incidence, path_name)
 
 
-def drone_to_galaxy():
+def sync_kml_galaxy():
     sync_kmls_file()
     sync_kmls_to_galaxy(emergency=True)
     time.sleep(1.5)
@@ -294,9 +309,13 @@ def delete_incidence(incidence, path):
     incidence.is_active = False
     incidence.save()
     os.remove(path + "manage" + str(incidence.id) + ".kml")
-    os.remove(path + "incidence_" + str(incidence.id) + ".kml")
+    Kml.objects.filter(name="manage" + str(incidence.id) + ".kml").delete()
     os.remove(path + "in" + str(incidence.id) + "drone.kml")
-    sync_kmls_file()
+    Kml.objects.filter(name="in" + str(incidence.id) + "drone.kml").delete()
+    os.remove(path + "s_incidence_" + str(incidence.id) + ".kml")
+    Kml.objects.filter(name="s_incidence_" + str(incidence.id) + ".kml").delete()
+    sync_kml_galaxy()
+
 
 def weather_info(filename, temp, temp_max, temp_min, wind, cloud, pressure, humidity, description):
     with open(filename, "w") as kml_file:
@@ -308,10 +327,8 @@ def weather_info(filename, temp, temp_max, temp_min, wind, cloud, pressure, humi
                        + "\t\t<gx:balloonVisibility>1</gx:balloonVisibility>\n"
                        + "\t\t<description><![CDATA[\n"
                        + "\t\t\t<p><font size=5><b>Temperature</b> - " + str(temp) + "C</font></p>\n"
-                       + "\t\t\t<p><font size=5 color=\"blue\"><b>Temperature max. - " + str(
-            temp_max) + "C</b></font></p>\n"
-                       + "\t\t\t<p><font size=5 color=\"red\"><b>Temperature min. - " + str(
-            temp_min) + "</b></font></p>\n"
+                       + "\t\t\t<p><font size=5 color=\"blue\"><b>Temperature max. - " + str(temp_max) + "C</b></font></p>\n"
+                       + "\t\t\t<p><font size=5 color=\"red\"><b>Temperature min. - " + str(temp_min) + "</b></font></p>\n"
                        + "\t\t\t<p><font size=5><b>Wind - " + str(wind) + "m/s</b></font></p>\n"
                        + "\t\t\t<p><font size=5><b>Clouds - " + str(cloud) + "%</b></font></p>\n"
                        + "\t\t\t<p><font size=5><b>Pressure - " + str(pressure) + " hpa</b></font></p>\n"
@@ -320,7 +337,7 @@ def weather_info(filename, temp, temp_max, temp_min, wind, cloud, pressure, humi
                        + "\t\t\tLocation:<br>\n"
                        + "\t\t\t<p><font size=5><b>Latitude - 41.62</b></font></p>\n"
                        + "\t\t\t<p><font size=5><b>Longitude - 0.62</b></font></p>\n"
-                       + "\t\t\t<p><font size=5><b>Sky status - " + description + "</b></font></p>\n"
+                       + "\t\t\t<p><font size=5><b>Sky status - " + str(description) + "</b></font></p>\n"
                        # Avoid scrolling
                        + "\t\t\t<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>\n"
                        + "\t\t\t<hr>\n"
@@ -333,7 +350,6 @@ def weather_info(filename, temp, temp_max, temp_min, wind, cloud, pressure, humi
                        + "\t</Placemark>\n"
                        + "</kml>")
 
-
 def random_color():
     r = lambda: random.randint(0, 255)
     return '%02X%02X%02X%02X' % (r(), r(), r(), r())
@@ -341,8 +357,9 @@ def random_color():
 
 def create_dron_manage_route(path_name, id):
     ip_server = get_server_ip()
-    url_file = "http://" + str(ip_server)[0:(len(ip_server) - 1)] + ":8000/static/kml/" + "in" + str(id) + "drone.kml" + "\n"
+    url_file = "http://" + str(ip_server)[0:(len(ip_server) - 1)] + ":8000/static/kml/" + "in" + str(
+        id) + "drone.kml" + "\n"
     manage_dron_route_kml(path_name + "manage" + str(id), url_file)
     print url_file
-    drone_to_galaxy()
+    sync_kml_galaxy()
     time.sleep(2)

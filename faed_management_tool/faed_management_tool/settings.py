@@ -29,6 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+WEATHER_API_KEY = os.environ['WEATHER_API_KEY']
 
 # Application definition
 
