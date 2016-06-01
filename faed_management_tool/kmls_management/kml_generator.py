@@ -43,7 +43,7 @@ def placemark_kml(drone, geo_point, filename):
                        + "</kml>")
 
 
-def manage_dron_route_kml(filename, url):
+def manage_kml(filename, url, time):
     with open(filename + ".kml", "w") as kml_file:
         kml_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                        + "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n"
@@ -52,11 +52,35 @@ def manage_dron_route_kml(filename, url):
                        + "\t\t\t<Link>\n"
                        + "\t\t\t\t<href>" + url + "</href>\n"
                        + "\t\t\t\t<refreshMode>onInterval</refreshMode>\n"
-                       + "\t\t\t\t<refreshInterval>0.5</refreshInterval>\n"
+                       + "\t\t\t\t<refreshInterval>" + str(time)+ "</refreshInterval>\n"
                        + "\t\t\t</Link>\n"
                        + "\t\t</NetworkLink>\n"
                        + "\t</Document>\n"
                        + "</kml>")
+
+'''
+    At the moment this function reloads every X time, if there are more incidences can be changed and delete the
+    refresh time.
+'''
+def manage_meteo(filename, url, time):
+    with open(filename + ".kml", "w") as kml_file:
+        kml_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                       + "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n"
+                       + "\t<Document>\n"
+                       + "\t\t<ScreenOverlay>\n"
+                       + "\t\t\t<Icon>\n"
+                       + "\t\t\t\t<href>" + url + "</href>\n"
+                       + "\t\t\t\t<refreshMode>onInterval</refreshMode>\n"
+                       + "\t\t\t\t<refreshInterval>" + str(time)+ "</refreshInterval>\n"
+                       + "\t\t\t</Icon>\n"
+                       + "\t\t\t<overlayXY x='0' y='-1' xunits='fraction' yunits='fraction'/>\n"
+                       + "\t\t\t<screenXY x='0' y='-250' xunits='fraction' yunits='pixels'/>\n"
+                       + "\t\t\t<rotationXY x='0' y='0' xunits='fraction' yunits='fraction'/>\n"
+                       + "\t\t\t<size x='0' y='0' xunits='fraction' yunits='fraction'/>\n"
+                       + "\t\t</ScreenOverlay>\n"
+                       + "\t</Document>\n"
+                       + "</kml>")
+
 
 
 def circle_kml(points, filename):
@@ -359,7 +383,7 @@ def create_dron_manage_route(path_name, id):
     ip_server = get_server_ip()
     url_file = "http://" + str(ip_server)[0:(len(ip_server) - 1)] + ":8000/static/kml/" + "in" + str(
         id) + "drone.kml" + "\n"
-    manage_dron_route_kml(path_name + "manage" + str(id), url_file)
+    manage_kml(path_name + "manage" + str(id), url_file, 0.5)
     print url_file
     sync_kml_galaxy()
     time.sleep(2)

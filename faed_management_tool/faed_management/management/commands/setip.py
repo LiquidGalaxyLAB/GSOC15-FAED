@@ -5,7 +5,7 @@ from kmls_management.models import Kml
 from faed_management.models import Incidence, Hangar, DropPoint
 from faed_management.static.py_func.sendtoLG import sync_kmls_file, sync_kmls_to_galaxy
 
-from faed_management.static.py_func.weather import generate_weather
+from faed_management.static.py_func.weather import generate_weather, generate_weather_image
 
 from kmls_management.kml_generator import create_hangar_polygon
 
@@ -38,17 +38,16 @@ class Command(BaseCommand):
                                        "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5]):" +
                                        "(\d{1,5})$")
             if patternIp.match(parsed_ip) or patternIpAddr.match(parsed_ip):
-                write_ip(parsed_ip);
+                write_ip(parsed_ip)
+                if not options['addrport']:
+                    app_ip = "127.0.0.1:8000"
+                else:
+                    app_ip = options['addrport']
                 self.stdout.write(self.style.SUCCESS('Successfully changed the ip to "%s"' % parsed_ip))
                 self.clear_databases()
                 self.create_system_files()
-                self.create_base_kml()
-                if not options['addrport']:
-                    os.system("python manage.py runserver")
-                else:
-                    write_ip(parsed_ip)
-                    addrport = options['addrport']
-                    os.system("python manage.py runserver " + addrport)
+                self.create_base_kml(app_ip)
+                os.system("python manage.py runserver " + app_ip)
             else:
                 self.stdout.write(self.style.error('Ip "%s" have an incorrect format' % parsed_ip))
         except:
@@ -67,13 +66,13 @@ class Command(BaseCommand):
         os.system("mkdir /tmp/kml")
         os.system("touch /tmp/kml/kmls.txt")
 
-    def create_base_kml(self):
+    def create_base_kml(self, app_ip):
         path = BASE_DIR + "/faed_management/static/kml/"
         self.create_hangars(path)
         self.create_droppoints(path)
         self.stdout.write("Creating Weather Kml...")
-        generate_weather(path)
-        self.stdout.write("KML done")
+        generate_weather_image(BASE_DIR + "/faed_management", app_ip)
+        self.stdout.write("KMLs done")
         sync_kmls_file()
         sync_kmls_to_galaxy()
 

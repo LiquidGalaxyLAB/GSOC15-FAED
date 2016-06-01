@@ -21,6 +21,8 @@ from faed_management.static.py_func.sendtoLG import get_ip
 from faed_management.static.py_func.weather import can_fly
 
 from faed_management.static.py_func.weather import generate_weather
+
+from faed_management.static.py_func.weather import generate_weather_image
 from serializers import HangarSerializer, DropPointSerializer, MeteoStationSerializer
 from faed_management.models import Hangar, DropPoint, MeteoStation, StyleURL, Drone
 from faed_management.forms import HangarForm, MeteoStationForm, DropPointForm, StyleURLForm, DroneForm
@@ -379,8 +381,8 @@ def delete_kml(id, type):
 
 # Geo functions
 def find_emergency_path(request):
-    # if not can_fly():
-    #     return HttpResponse(status=503)
+    if not can_fly():
+        return HttpResponse(status=503)
     lat = request.GET.get('lat', '')
     lon = request.GET.get('lng', '')
     path = os.path.dirname(__file__) + "/static/kml/"
@@ -447,3 +449,12 @@ def generate_mission_file(hangar):
 def test_ip(request):
     ip = get_ip()
     return HttpResponse(ip)
+
+
+def refresh_weather(requests):
+    generate_weather_image(os.path.dirname(__file__))
+    try:
+        with open(os.path.dirname(__file__) + "/static/img/temperature.png", "rb") as f:
+            return HttpResponse(f.read(), content_type="image/png")
+    except IOError:
+        return HttpResponse(status=201)
