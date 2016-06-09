@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Kml(models.Model):
     name = models.CharField(max_length=50)
@@ -8,5 +9,3 @@ class Kml(models.Model):
 
     def __unicode__(self):
         return str(self.name)
-
-

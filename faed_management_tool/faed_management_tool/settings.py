@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GEOS_LIBRARY_PATH = '/usr/local/lib/libgeos_c.so'
 
@@ -34,7 +32,7 @@ WEATHER_API_KEY = os.environ['WEATHER_API_KEY']
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,8 +44,6 @@ INSTALLED_APPS = (
     'faed_drone_publisher',
     'rest_framework',
     'kmls_management',
-
-    # 'corsheaders',
 )
 
 REST_FRAMEWORK = {
@@ -57,7 +53,6 @@ REST_FRAMEWORK = {
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,8 +63,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'faed_management_tool.urls'
-
-# CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {
@@ -89,7 +82,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'faed_management_tool.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -99,7 +91,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -113,7 +104,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/

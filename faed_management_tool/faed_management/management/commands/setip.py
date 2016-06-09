@@ -3,19 +3,18 @@ from django.core.management.base import BaseCommand, CommandError
 import re
 from kmls_management.models import Kml
 from faed_management.models import Incidence, Hangar, DropPoint
-from faed_management.static.py_func.sendtoLG import sync_kmls_file, sync_kmls_to_galaxy
-
-from faed_management.static.py_func.weather import generate_weather, generate_weather_image
-
-from kmls_management.kml_generator import create_hangar_polygon
-
+from faed_management.static.py_func.sendtoLG import sync_kmls_file, \
+    sync_kmls_to_galaxy
+from faed_management.static.py_func.weather import generate_weather, \
+    generate_weather_image
+from kmls_management.kml_generator import create_hangar_polygon, \
+    create_droppoint_marker, hangar_influence
 from faed_management_tool.settings import BASE_DIR
-
-from kmls_management.kml_generator import create_droppoint_marker
 
 
 def write_ip(ip):
-    f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/ipsettings', 'w')
+    f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__))) +
+             '/ipsettings', 'w')
     f.write(ip)
     f.close()
 
@@ -32,24 +31,36 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             parsed_ip = options['ip']
-            patternIp = re.compile("^([m01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                                   "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$")
-            patternIpAddr = re.compile("^([m01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                                       "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5]):" +
-                                       "(\d{1,5})$")
+            patternIp = re.compile(
+                "^([m01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]" +
+                "\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$")
+            patternIpAddr = re.compile(
+                "^([m01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?" +
+                "|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])" +
+                "\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5]):(\d{1,5})$")
             if patternIp.match(parsed_ip) or patternIpAddr.match(parsed_ip):
                 write_ip(parsed_ip)
                 if not options['addrport']:
                     app_ip = "127.0.0.1:8000"
                 else:
                     app_ip = options['addrport']
-                self.stdout.write(self.style.SUCCESS('Successfully changed the ip to "%s"' % parsed_ip))
+                self.stdout.write(self.style.SUCCESS(
+                    'Successfully changed the ip to "%s"' % parsed_ip))
+                path = BASE_DIR + "/faed_management/static/kml/"
+                # Erasing the files and Databases with KMl and
+                # other dynamic information created during the FAED run.
                 self.clear_databases()
+                os.system("rm -r " + path + "*")
+                print "rm -r " + path + "*"
+                # Creating the KMl files with the information of the Database
                 self.create_system_files()
-                self.create_base_kml(app_ip)
+                self.create_base_kml(app_ip, path)
                 os.system("python manage.py runserver " + app_ip)
             else:
-                self.stdout.write(self.style.error('Ip "%s" have an incorrect format' % parsed_ip))
+                self.stdout.write(
+                    self.style.error(
+                        'Ip "%s" have an incorrect format' % parsed_ip))
         except:
             raise CommandError('FAED cannot be raised')
 
@@ -58,34 +69,38 @@ class Command(BaseCommand):
         try:
             Kml.objects.all().delete()
             Incidence.objects.all().delete()
-        except:
-            self.stdout.write(self.style.error("Error deleting data from the tables."))
+        except Exception:
+            self.stdout.write(self.style.error("Error deleting data from" +
+                                               " the tables."))
 
     def create_system_files(self):
         self.stdout.write("Creating startUp files...")
         os.system("mkdir /tmp/kml")
         os.system("touch /tmp/kml/kmls.txt")
 
-    def create_base_kml(self, app_ip):
-        path = BASE_DIR + "/faed_management/static/kml/"
+    def create_base_kml(self, app_ip, path):
         self.create_hangars(path)
         self.create_droppoints(path)
         self.stdout.write("Creating Weather Kml...")
         generate_weather_image(BASE_DIR + "/faed_management", app_ip)
+        # generate_weather(BASE_DIR + "/faed_management/static/kml")
         self.stdout.write("KMLs done")
-        sync_kmls_file()
-        sync_kmls_to_galaxy()
+        # sync_kmls_file()
+        # sync_kmls_to_galaxy()
 
     def create_hangars(self, path):
         self.stdout.write("Creating Hangars Kml...")
         for item in Hangar.objects.all():
-            name = "hangar" + str(item.id) + ".kml"
-            Kml(name=name, url=path + name).save()
+            name = "hangar_" + str(item.id) + ".kml"
             create_hangar_polygon(item, path + name)
+            name_inf = hangar_influence(item, path +
+                                        "hangar_" + str(item.id) + "_inf.kml")
+            Kml(name=name, url=path + name).save()
+            Kml(name=name_inf, url=path + name_inf).save()
 
     def create_droppoints(self, path):
         self.stdout.write("Creating Droppoints Kml...")
         for item in DropPoint.objects.all():
-            name = "droppoint" + str(item.id) + ".kml"
+            name = "droppoint_" + str(item.id) + ".kml"
             Kml(name=name, url=path + name).save()
             create_droppoint_marker(item, path + name)

@@ -17,10 +17,11 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from faed_drone_publisher.views import drone_detail
-from faed_management.views import HangarsView, HangarsList, DropPointsView, DropPointsList, MeteoStationsList, MeteoStationsView
+from faed_management.views import HangarsList, DropPointsList, \
+    MeteoStationsList
+# MeteoStationsView, HangarsView, DropPointsView
 from django.views.generic.base import TemplateView
 from rest_framework import routers
-
 from faed_management import views
 
 
@@ -36,7 +37,8 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^api/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-auth/',
+        include('rest_framework.urls', namespace='rest_framework')),
 
     url(r'^styleurlform/$', views.submit_styleurl),
 
@@ -57,10 +59,14 @@ urlpatterns = [
     url(r'^cityform/$', views.submit_city),
 
 
-    # url(r'^meteostations/$', MeteoStationsView.as_view(), name='meteostations_list'),
-    url(r'^meteostations/$', views.meteostations_per_city, name='meteostations_list'),
-    url(r'^meteostations/delete_meteostation/(?P<id>\w+)/$', views.delete_meteostation),
-    url(r'^meteostations/edit_meteostation/(?P<id>\w+)/$', views.edit_meteostation),
+    # url(r'^meteostations/$',
+    # MeteoStationsView.as_view(), name='meteostations_list'),
+    url(r'^meteostations/$', views.meteostations_per_city,
+        name='meteostations_list'),
+    url(r'^meteostations/delete_meteostation/(?P<id>\w+)/$',
+        views.delete_meteostation),
+    url(r'^meteostations/edit_meteostation/(?P<id>\w+)/$',
+        views.edit_meteostation),
     url(r'^meteostations_list/$', MeteoStationsList.as_view()),
     url(r'^meteostationform/$', views.submit_meteostation),
 
@@ -70,7 +76,6 @@ urlpatterns = [
 
     url(r'^incidence/$', views.find_emergency_path),
     url(r'^refreshweather/$', views.refresh_weather),
-    url(r'^probeta/$', views.test_ip),
 
 
 ]
