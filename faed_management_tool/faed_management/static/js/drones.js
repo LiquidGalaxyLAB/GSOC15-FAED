@@ -76,12 +76,12 @@ var contentString = '<div id="content">'+
 
 
 
-function loadHangars(){
+function loadHangars(url_base){
 
 var hangar = {}
 
-var url = "http://localhost:8000/api/hangars/?format=json";
-
+var url = url_base + "api/hangars/?format=json";
+console.log(url)
 $.getJSON( url, function( data ) {
   var items = [];
   $.each( data, function( key, val ) {
@@ -105,11 +105,11 @@ return hangar;
 }
 
 
-function loadDroppoints(){
+function loadDroppoints(url_base){
 
 var droppoint = {}
 
-var url = "http://localhost:8000/api/droppoints/?format=json";
+var url = url_base + "api/droppoints/?format=json";
 
 $.getJSON( url, function( data ) {
   var items = [];

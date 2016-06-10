@@ -1,7 +1,7 @@
 from django.db import models
 
-class City(models.Model):
 
+class City(models.Model):
     name = models.CharField(max_length=100)
     lat = models.FloatField(default='0')
     lng = models.FloatField(default='0')
@@ -18,6 +18,7 @@ class StyleURL(models.Model):
     def __unicode__(self):
         return str(self.name)
 
+
 class DropPoint(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
@@ -30,6 +31,7 @@ class DropPoint(models.Model):
 
     def __unicode__(self):
         return str(self.name)
+
 
 class Drone(models.Model):
     name = models.CharField(max_length=50)
@@ -46,6 +48,7 @@ class Drone(models.Model):
     def __unicode__(self):
         return str(self.name + '-' + self.plate)
 
+
 class Hangar(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
@@ -61,6 +64,7 @@ class Hangar(models.Model):
 
     def __unicode__(self):
         return str(self.name)
+
 
 class MeteoStation(models.Model):
     name = models.CharField(max_length=50)
@@ -83,3 +87,12 @@ class MeteoStation(models.Model):
 
     def __unicode__(self):
         return str(self.name)
+
+
+class Incidence(models.Model):
+    lat = models.FloatField()
+    long = models.FloatField()
+    is_active = models.BooleanField(default=True)
+    dropPoint = models.ForeignKey(DropPoint)
+    hangar = models.ForeignKey(Hangar)
+    drone = models.ForeignKey(Drone, null=True)

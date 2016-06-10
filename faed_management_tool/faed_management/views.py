@@ -1,34 +1,39 @@
 import os
 import sys
-import json
-import requests
-
 from django.contrib.gis.measure import D
 from django.contrib.gis.geos.point import Point
 from django.views.generic import ListView
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from rest_framework import viewsets
-
 import forms
 import models
 from kmls_management.models import Kml
-from faed_management.static.py_func.sendtoLG import sync_kmls_to_galaxy, sync_kmls_file
 from kmls_management import kml_generator
-from serializers import HangarSerializer, DropPointSerializer, MeteoStationSerializer
-from faed_management.models import Hangar, DropPoint, MeteoStation, StyleURL, Drone
-from faed_management.forms import HangarForm, MeteoStationForm, DropPointForm, StyleURLForm, DroneForm
+from faed_management.static.py_func.weather import can_fly, generate_weather, \
+    generate_weather_image
+
+from faed_management.static.py_func.sendtoLG import \
+    get_server_ip, sync_kmls_file, sync_kmls_to_galaxy
+from serializers import HangarSerializer, DropPointSerializer, \
+    MeteoStationSerializer
+from faed_management.models import Hangar, DropPoint, MeteoStation, StyleURL, \
+    Drone
+from faed_management.forms import HangarForm, MeteoStationForm, DropPointForm,\
+    StyleURLForm, DroneForm
 
 
 # List items
 class HangarsList(ListView):
     model = Hangar
 
+
 class HangarsView(ListView):
     template_name = 'hangars.html'
     context_object_name = 'hangars'
     queryset = models.Hangar.objects.all()
     success_url = "/hangars"
+
 
 def hangar_per_city(request):
     hangars = models.Hangar.objects.all()
@@ -42,7 +47,9 @@ def hangar_per_city(request):
         except KeyError:
             sorted_dict[hangar.city] = [hangar]
 
-    return render(request, 'hangars.html', {'cities':cities, 'hangars_city': sorted_dict})
+    return render(request, 'hangars.html',
+                  {'cities': cities, 'hangars_city': sorted_dict})
+
 
 class MeteoStationsList(ListView):
     model = MeteoStation
@@ -53,6 +60,7 @@ class MeteoStationsView(ListView):
     context_object_name = 'meteostations'
     queryset = models.MeteoStation.objects.all()
     success_url = "/meteostations"
+
 
 def meteostations_per_city(request):
     meteostations = models.MeteoStation.objects.all()
@@ -66,7 +74,9 @@ def meteostations_per_city(request):
         except KeyError:
             sorted_dict[meteostation.city] = [meteostation]
 
-    return render(request, 'meteostations.html', {'cities':cities, 'meteostations_city': sorted_dict})
+    return render(request, 'meteostations.html',
+                  {'cities': cities, 'meteostations_city': sorted_dict})
+
 
 class DropPointsList(ListView):
     model = DropPoint
@@ -77,6 +87,7 @@ class DropPointsView(ListView):
     context_object_name = 'droppoints'
     queryset = models.DropPoint.objects.all()
     success_url = "/droppoints"
+
 
 def droppoint_per_city(request):
     droppoints = models.DropPoint.objects.all()
@@ -90,7 +101,10 @@ def droppoint_per_city(request):
         except KeyError:
             sorted_dict[droppoint.city] = [droppoint]
 
-    return render(request, 'droppoints.html', {'cities':cities, 'droppoints_city': sorted_dict})
+    return render(request, 'droppoints.html', {'cities': cities,
+                                               'droppoints_city': sorted_dict})
+
+
 # Forms
 
 def submit_city(request):
@@ -131,8 +145,8 @@ def submit_droppoint(request):
             droppoint = form.save(commit=False)
             droppoint.save()
             create_kml(droppoint, "droppoint", "create")
-            #sync_kmls_file()
-            #sync_kmls_to_galaxy()
+            # sync_kmls_file()
+            # sync_kmls_to_galaxy()
 
             return HttpResponseRedirect('/droppoints/')
     else:
@@ -167,8 +181,8 @@ def submit_hangar(request):
             hangar.drone.save()
             hangar.save()
             create_kml(hangar, "hangar", "create")
-            #sync_kmls_file()
-            #sync_kmls_to_galaxy()
+            # sync_kmls_file()
+            # sync_kmls_to_galaxy()
 
             return HttpResponseRedirect('/hangars/')
     else:
@@ -184,8 +198,8 @@ def submit_meteostation(request):
             meteostation = form.save(commit=False)
             meteostation.save()
             create_kml(meteostation, "meteo", "create")
-            #sync_kmls_file()
-            #sync_kmls_to_galaxy()
+            # sync_kmls_file()
+            # sync_kmls_to_galaxy()
             return HttpResponseRedirect('/meteostations/')
     else:
 
@@ -274,8 +288,8 @@ def edit_hangar(request, id):
             hangar.save()
             create_kml(hangar, "hangar", "edit")
 
-            #sync_kmls_file()
-            #sync_kmls_to_galaxy()
+            # sync_kmls_file()
+            # sync_kmls_to_galaxy()
 
             return HttpResponseRedirect('/hangars')
 
@@ -291,8 +305,8 @@ def edit_meteostation(request, id):
             meteostation = form.save(commit=False)
             meteostation.save()
             create_kml(meteostation, "meteo", "edit")
-            #sync_kmls_file()
-            #sync_kmls_to_galaxy()
+            # sync_kmls_file()
+            # sync_kmls_to_galaxy()
             return HttpResponseRedirect('/meteostations')
 
     return render(request, 'meteostation_form.html', {'form': form})
@@ -307,8 +321,8 @@ def edit_droppoint(request, id):
             droppoint = form.save(commit=False)
             droppoint.save()
             create_kml(droppoint, "droppoint", "edit")
-            #sync_kmls_file()
-            #sync_kmls_to_galaxy()
+            # sync_kmls_file()
+            # sync_kmls_to_galaxy()
 
             return HttpResponseRedirect('/droppoints')
 
@@ -333,112 +347,114 @@ def create_kml(item, type, action):
         kml_vis.save()
 
     if type == 'hangar':
-        name_influence = kml_generator.hangar_influence(item, os.path.dirname(__file__) + "/static/kml/" + type + "_" + str(item.id) + "_inf.kml")
+        name_influence = kml_generator\
+            .hangar_influence(item, os.path.dirname(__file__) +
+                              "/static/kml/" + type + "_" +
+                              str(item.id) + "_inf.kml")
         if action == 'create':
-            Kml(name=name_influence, url="static/kml/" + name_influence, visibility=item.is_available).save()
+            Kml(name=name_influence, url="static/kml/" + name_influence,
+                visibility=item.is_available).save()
         else:
             kml_vis = Kml.objects.get(name=name_influence)
             kml_vis.visibility = item.is_available
             kml_vis.save()
 
 
-def delete_kml(id, type):
-    filename = type + "_" + str(id) + ".kml"
+def delete_kml(id_kml, type_kml):
+    filename = type_kml + "_" + str(id_kml) + ".kml"
     path = os.path.dirname(__file__) + "/static/kml/"
     for files in os.walk(path):
         if filename in files[2]:
             Kml.objects.get(name=filename).delete()
             os.remove(path + filename)
-            if type == 'hangar':
-                filename_inf = type + "_" + str(id) + "_inf.kml"
+            if type_kml == 'hangar':
+                filename_inf = type_kml + "_" + str(id_kml) + "_inf.kml"
                 if filename_inf in files[2]:
                     Kml.objects.get(name=filename_inf).delete()
                     os.remove(path + filename_inf)
-
-            #sync_kmls_file()
-            #sync_kmls_to_galaxy()
-
+            # sync_kmls_file()
+            # sync_kmls_to_galaxy()
             return
 
 
 # Geo functions
 def find_emergency_path(request):
-
-    MAX_WIND_SPEED = 10.0
-
-    url = 'http://api.openweathermap.org/data/2.5/weather?q=Lleida&units=metric'
-    response = requests.get(url=url)
-    data = json.loads(response.text)
-
-    try:
-        if data['wind']['speed'] >= MAX_WIND_SPEED or bool(data['rain']):
-            print data['rain']
-            print data['wind']['speed']
-            return HttpResponse(status=503)
-    except KeyError:
-        pass
-
+    # if not can_fly():
+    #     return HttpResponse(status=503)
     lat = request.GET.get('lat', '')
     lon = request.GET.get('lng', '')
     path = os.path.dirname(__file__) + "/static/kml/"
-
+    # generate_weather(path)
     last_distance = sys.maxint
     all_hangars = models.Hangar.objects.all()
     selected_hangar = None
     all_droppoints = models.DropPoint.objects.all()
     selected_droppoint = None
     point_location = Point(float(lon), float(lat))
-
     for droppoint in all_droppoints:
-        distance = D(m=point_location.distance(Point(droppoint.longitude, droppoint.latitude)))
+        distance = D(m=point_location.distance(
+            Point(droppoint.longitude, droppoint.latitude)))
         if distance.m < last_distance:
             last_distance = distance.m
             selected_droppoint = droppoint
-
     last_distance = sys.maxint
-    point_location = Point(selected_droppoint.longitude, selected_droppoint.latitude)
+    point_location = Point(
+        selected_droppoint.longitude, selected_droppoint.latitude)
     for hangar in all_hangars:
-        distance = D(m=point_location.distance(Point(hangar.longitude, hangar.latitude)))
+        distance = D(m=point_location.distance(
+            Point(hangar.longitude, hangar.latitude)))
         if distance.m < last_distance:
             last_distance = distance.m
             selected_hangar = hangar
-
-    # print selected_hangar.name, selected_hangar.drone.name, selected_droppoint.name
-
     selected_hangar.drone.destination_lat = selected_droppoint.latitude
     selected_hangar.drone.destination_lon = selected_droppoint.longitude
-
     if not selected_hangar.is_available:
         return HttpResponse(status=503)
-
-    kml_generator.weather_info(os.path.dirname(__file__) + "/static/kml/meteo_info.kml",
-                               data['main']['temp'], data['main']['temp_max'], data['main']['temp_min'],
-                               data['wind']['speed'], data['clouds']['all'], data['main']['pressure'],
-                               data['main']['humidity'], data['weather'][0]['description'])
-
+    incidence = models.Incidence(lat=lat, long=lon,
+                                 dropPoint=selected_droppoint,
+                                 drone=hangar.drone,
+                                 hangar=selected_hangar, is_active=True)
+    incidence.save()
     # generate_mission_file(selected_hangar)
-    kml_generator.create_emergency_marker(lat, lon, path + "incidence.kml")
-    Kml(name="incidence.kml", url="static/kml/incidence.kml", visibility=True).save()
-    #sync_kmls_file()
-    #sync_kmls_to_galaxy(emergency=True)
-    kml_generator.find_drone_path(selected_hangar, selected_droppoint, path)
-
-    Kml.objects.get(name="incidence.kml").delete()
-    os.remove(path + "incidence.kml")
-
-    for step in range(0, 34, 1):
-        Kml.objects.get(name="drone_" + str(step) + ".kml").delete()
-        os.remove(path + "drone_" + str(step) + ".kml")
-
-    #sync_kmls_file()
-    #sync_kmls_to_galaxy(emergency=True)
-
+    kml_generator.find_drone_path(
+        selected_hangar, selected_droppoint, path, incidence)
     return HttpResponse(status=201)
 
+
 def generate_mission_file(hangar):
-    with open("/home/lg/interactivespaces/controller/controller/activities/installed/f04abff8-1bd3-4c9e-8366-8f1b44f05cb5/install", "w") as mission_file:
-        mission_file.write("QGC WPL 110\n"
-                          + "0\t0\t0\t16\t0.000000\t0.000000\t0.000000\t0.000000\t" + str(hangar.longitude) + "\t" + str(hangar.latitude) + "\t" + str(hangar.altitude) + "\t1\n"
-                          + "1\t0\t3\t22\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t50.000000\t1\n"
-                          + "2\t0\t3\t16\t0.000000\t0.000000\t0.000000\t0.000000\t" + str(hangar.drone.destination_lon) + "\t" + str(hangar.drone.destination_lat) + "\t" + str(hangar.altitude) + "\t1\n"
-                          + "3\t0\t3\t21\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t1\n")
+    with open(
+            "/home/lg/interactivespaces/controller/controller/activities/" +
+            "installed/f04abff8-1bd3-4c9e-8366-8f1b44f05cb5/install",
+            "w") as mission_file:
+            mission_file.write(
+                "QGC WPL 110\n" +
+                "0\t0\t0\t16\t0.000000\t0.000000\t0.000000\t0.000000\t" +
+                str(hangar.longitude) + "\t" + str(hangar.latitude) + "\t" +
+                str(hangar.altitude) + "\t1\n" + "1\t0\t3\t22\t0.000000\t" +
+                "0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t50.000000" +
+                "\t1\n2\t0\t3\t16\t0.000000\t0.000000\t0.000000\t0.000000\t" +
+                str(hangar.drone.destination_lon) + "\t" +
+                str(hangar.drone.destination_lat) + "\t" +
+                str(hangar.altitude) +
+                "\t1\n3\t0\t3\t21\t0.000000\t0.000000\t" +
+                "0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t1\n")
+
+
+def refresh_weather(request):
+    path_to_kml = generate_weather_image(os.path.dirname(__file__))
+    try:
+        return FileResponse(open(path_to_kml, 'rb'))
+    except IOError:
+        return HttpResponse(status=201)
+
+
+def refresh_kml(request):
+    sync_kmls_file()
+    sync_kmls_to_galaxy()
+    return HttpResponse("Done")
+
+
+def base(request):
+    ip = get_server_ip()
+    url_base = "http://" + str(ip)[0:(len(ip) - 1)] + ":8000/"
+    return render(request, 'index.html', {'url_base': url_base})
