@@ -318,32 +318,18 @@ def find_drone_path(origin, destiny, path_name, incidence, is_returning=False):
     bearing = \
         calculate_initial_compass_bearing(geo_point_origin, geo_point_destiny)
     take_off_steps = 8
-    if is_returning:
-        altitude = destiny.altitude
-    else:
-        altitude = origin.altitude
-    if not is_returning:
-        Kml(name="incidence" + str(incidence.id) + ".kml",
-            url=path_name + "incidence" + str(incidence.id) + ".kml",
-            visibility=True).save()
-        create_emergency_marker(incidence, path_name + "incidence" +
-                                str(incidence.id) + ".kml")
-        placemark_kml(incidence.drone,
-                      (geo_point_origin[0], geo_point_origin[1], altitude),
-                      file_path)
-        take_off_steps -= 1
-        altitude += 25
-        # sync_kml_galaxy()
-    else:
-        os.remove(path_name + "incidence" + str(incidence.id) + ".kml")
-        Kml.objects.filter(name="incidence" + str(incidence.id) + ".kml"). \
-            delete()
-        Kml(name="finishedincidence" + str(incidence.id) + ".kml",
-            url=path_name + "finishedincidence" + str(
-                incidence.id) + ".kml").save()
-        create_emergency_marker(incidence, path_name + "finishedincidence" +
-                                str(incidence.id) + ".kml", True)
-        # sync_kml_galaxy()
+    altitude = origin.altitude
+    Kml(name="incidence" + str(incidence.id) + ".kml",
+        url=path_name + "incidence" + str(incidence.id) + ".kml",
+        visibility=True).save()
+    create_emergency_marker(incidence, path_name + "incidence" +
+                            str(incidence.id) + ".kml")
+    placemark_kml(incidence.drone,
+                  (geo_point_origin[0], geo_point_origin[1], altitude),
+                  file_path)
+    take_off_steps -= 1
+    altitude += 25
+    sync_kml_galaxy()
     create_drone_manage_route(path_name, incidence.id)
     steps = 20
     lat = geo_point_origin[0]
@@ -368,18 +354,33 @@ def find_drone_path(origin, destiny, path_name, incidence, is_returning=False):
         altitude -= 25
         time.sleep(2)
 
-    print "Finished"
     time.sleep(5)
-    if not is_returning:
-        find_drone_path(destiny, origin, path_name, incidence, True)
-    else:
-        delete_incidence(incidence, path_name)
+    os.remove(path_name + "incidence" + str(incidence.id) + ".kml")
+    Kml.objects.filter(name="incidence" + str(incidence.id) + ".kml"). \
+        delete()
+    Kml(name="finishedincidence" + str(incidence.id) + ".kml",
+        url=path_name + "finishedincidence" + str(
+            incidence.id) + ".kml").save()
+    create_emergency_marker(incidence, path_name + "finishedincidence" +
+                            str(incidence.id) + ".kml", True)
+    sync_kml_galaxy()
+    time.sleep(10)
+    delete_incidence(incidence, path_name)
+    time.sleep(30)
+    delete_finished_incidence_marker(incidence, path_name)
 
 
 def sync_kml_galaxy():
     sync_kmls_file()
     sync_kmls_to_galaxy(emergency=True)
     time.sleep(1.5)
+
+
+def delete_finished_incidence_marker(incidence, path):
+    os.remove(path + "finishedincidence" + str(incidence.id) + ".kml")
+    Kml.objects.filter(name="finishedincidence" + str(incidence.id) + ".kml") \
+        .delete()
+    sync_kml_galaxy()
 
 
 def delete_incidence(incidence, path):
@@ -389,9 +390,6 @@ def delete_incidence(incidence, path):
     Kml.objects.filter(name="manage" + str(incidence.id) + ".kml").delete()
     os.remove(path + "in" + str(incidence.id) + "drone.kml")
     Kml.objects.filter(name="in" + str(incidence.id) + "drone.kml").delete()
-    os.remove(path + "finishedincidence" + str(incidence.id) + ".kml")
-    Kml.objects.filter(name="finishedincidence" + str(incidence.id) + ".kml") \
-        .delete()
     sync_kml_galaxy()
 
 
@@ -463,5 +461,5 @@ def create_drone_manage_route(path_name, id_incidence):
     Kml(name="manage" + str(id_incidence) + ".kml",
         url="static/kml/manage" + str(id_incidence) + ".kml").save()
     print url_file
-    # sync_kml_galaxy()
+    sync_kml_galaxy()
     time.sleep(2)

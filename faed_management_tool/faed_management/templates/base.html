@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
 
@@ -14,7 +14,7 @@
     <script type="text/javascript" src="/static/js/drones.js"></script>
 
     <!--Let browser know website is optimized for mobile-->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <title>FAED</title>
@@ -22,185 +22,192 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
 
     <script>
-// This example creates circles on the map, representing
-// radiuss in North America.
+        // This example creates circles on the map, representing
+        // radiuss in North America.
 
-var map;
-var image1 = {
-    url: '/static/img/faeddrone100x100.png',
-    // This marker is 20 pixels wide by 32 pixels tall.
-    size: new google.maps.Size(100, 100),
-    // The origin for this image is 0,0.
-    origin: new google.maps.Point(0,0),
-    // The anchor for this image is the base of the flagpole at 0,32.
-    anchor: new google.maps.Point(50, 50)
-  };
+        var map;
+        var image1 = {
+            url: '/static/img/faeddrone100x100.png',
+            // This marker is 20 pixels wide by 32 pixels tall.
+            size: new google.maps.Size(100, 100),
+            // The origin for this image is 0,0.
+            origin: new google.maps.Point(0,0),
+            // The anchor for this image is the base of the flagpole at 0,32.
+            anchor: new google.maps.Point(50, 50)
+        };
 
-var image2 = {
-    url: '/static/img/marker.png',
-
-
-  };
-var markers = [];
-var circles = [];
+        var image2 = {
+            url: '/static/img/marker.png',
 
 
-var hangars = {};
-var droppoints = [];
-
-hangars = loadHangars();
-droppoints = loadDroppoints(map);
+        };
+        var markers = [];
+        var circles = [];
 
 
-var cityCircle;
+        var hangars = {};
+        var droppoints = [];
+
+        hangars = loadHangars("{{ url_base }}");
+        droppoints = loadDroppoints("{{ url_base }}");
 
 
-function initialize() {
+        var cityCircle;
 
 
-  // Create the map.
-  var mapOptions = {
-    zoom: 13,
-    center: new google.maps.LatLng(41.617147, 0.624870),
-    mapTypeId: google.maps.MapTypeId.TERRAIN
-  };
-
-	map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
-
-  // Construct the circle for each value in hangar.
-  // Note: We scale the area of the circle based on the radius.
-  for (var city in hangars) {
-        if (hangars[city].availability){
-          addMarkerIcon(hangars[city].center, map, image1, hangars[city].title);
-  addCircle(hangars[city].center, map, hangars[city].title, hangars[city].radius);
-  }
-
-  }
+        function initialize() {
 
 
-  for (var point in droppoints) {
-  if(droppoints[point].availability){
-    addMarker(droppoints[point].center, map , droppoints[point].title,droppoints[point].name, droppoints[point].description);
-    }
+            // Create the map.
+            var mapOptions = {
+                zoom: 13,
+                center: new google.maps.LatLng(41.617147, 0.624870),
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+            };
 
-  }
+            map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
 
-}
+            // Construct the circle for each value in hangar.
+            // Note: We scale the area of the circle based on the radius.
+            for (var city in hangars) {
+                if (hangars[city].availability){
+                    addMarkerIcon(hangars[city].center, map, image1, hangars[city].title);
+                    addCircle(hangars[city].center, map, hangars[city].title, hangars[city].radius);
+                }
+                refresh_kml('{{ url }}')
+            }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+
+            for (var point in droppoints) {
+                if(droppoints[point].availability){
+                    addMarker(droppoints[point].center, map , droppoints[point].title,droppoints[point].name, droppoints[point].description);
+                }
+
+            }
+
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
 
-      <script>
-   			$(document).ready(function(){
-      	 // Initialize collapse button
- 		 $(".button-collapse").sideNav();
- 		 // Initialize collapsible (uncomment the line below if you use the dropdown variation)
- 		 //$('.collapsible').collapsible();
+    <script>
+        $(document).ready(function(){
+            // Initialize collapse button
+            $(".button-collapse").sideNav();
+            // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+            //$('.collapsible').collapsible();
 
-$('.meteostations').on('click', function(){
-    testingjquery();
- })
+            $('.meteostations').on('click', function(){
+                testingjquery();
+            })
 
- 	$('.droppoint').on('click', function(){
+            $('.droppoint').on('click', function(){
 
-        var $el = $(this);
-        var isSelected = $el.attr('data-selected');
+                var $el = $(this);
+                var isSelected = $el.attr('data-selected');
 
-        if( isSelected != 'true' ){
-        for(var i=0;i<markers.length;i++){
-            if(markers[i].title =="droppoint"){
-                markers[i].setVisible(false);
-            }
+                if( isSelected != 'true' ){
+                    for(var i=0;i<markers.length;i++){
+                        if(markers[i].title =="droppoint"){
+                            markers[i].setVisible(false);
+                        }
+                    }
+                    $el.attr('data-selected', true)
+                }else{
+                    for(var i=0;i<markers.length;i++){
+                        if(markers[i].title =="droppoint"){
+                            markers[i].setVisible(true);
+                        }
+                    }            $el.attr('data-selected', false)
+                }
+
+            })
+
+
+            $('.hangar').on('click', function(){
+                var $el = $(this);
+                var isSelected = $el.attr('data-selected');
+
+                if( isSelected != 'true' ){
+                    for(var i=0;i<markers.length;i++){
+                        if(markers[i].title =="hangar"){
+                            markers[i].setVisible(false);
+                        }
+                    }
+                    for(var i=0;i<circles.length;i++){
+                        if(circles[i].title =="hangar"){
+                            circles[i].setVisible(false);
+                        }
+                    }
+
+                    $el.attr('data-selected', true)
+                }else{
+                    for(var i=0;i<markers.length;i++){
+                        if(markers[i].title =="hangar"){
+                            markers[i].setVisible(true);
+                        }
+                    }
+                    for(var i=0;i<circles.length;i++){
+                        if(circles[i].title =="hangar"){
+                            circles[i].setVisible(true);
+                        }
+                    }
+
+                    $el.attr('data-selected', false)
+                }
+
+            })
+
+        });
+        function refresh_kml(url){
+            url_to = url + "refresh_kml";
+            $.ajax({url: url_to});
         }
-            $el.attr('data-selected', true)
-        }else{
- for(var i=0;i<markers.length;i++){
-            if(markers[i].title =="droppoint"){
-                markers[i].setVisible(true);
-            }
-        }            $el.attr('data-selected', false)
-        }
-
-    })
-
-
-    $('.hangar').on('click', function(){
-        var $el = $(this);
-        var isSelected = $el.attr('data-selected');
-
-        if( isSelected != 'true' ){
-        for(var i=0;i<markers.length;i++){
-            if(markers[i].title =="hangar"){
-                markers[i].setVisible(false);
-            }
-        }
-         for(var i=0;i<circles.length;i++){
-            if(circles[i].title =="hangar"){
-                circles[i].setVisible(false);
-            }
-        }
-
-            $el.attr('data-selected', true)
-        }else{
-        for(var i=0;i<markers.length;i++){
-            if(markers[i].title =="hangar"){
-                markers[i].setVisible(true);
-            }
-        }
-         for(var i=0;i<circles.length;i++){
-            if(circles[i].title =="hangar"){
-                circles[i].setVisible(true);
-            }
-        }
-
-                 $el.attr('data-selected', false)
-        }
-
-    })
-
-    });
 
 
 
     </script>
-  </head>
+</head>
 
-    <body>
+<body>
 
-    <div id="menu-top">
-         <nav style="position: fixed;">
-            <ul id="slide-out" class="side-nav">
-                <p class="center-align">
-                             <img src="/static/img/faed_logo.png" width="200px"/>
-                </p>
-                <li><a href="/index">
-                    <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">map</i>Map</a>
-                </li>
-                <li><a href="/hangars">
-                    <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">open_with</i>Drones</a>
-                </li>
-                <li><a href="/droppoints">
-                    <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">pin_drop</i>DropPoints</a>
-                </li>
-                <li><a href="/meteostations">
-                    <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">satellite</i>Stations</a>
-                </li>
-            </ul>
-		<a href="#"  data-activates="slide-out" class="button-collapse  show-on-large"><i class="mdi-navigation-menu"></i></a>
-	    </nav>
-    </div>
+<div id="menu-top">
+    <nav style="position: fixed;">
+        <ul id="slide-out" class="side-nav">
+            <p class="center-align">
+                <img src="/static/img/faed_logo.png" width="200px"/>
+            </p>
+            <li><a href="/index">
+                <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">map</i>Map</a>
+            </li>
+            <li><a href="/hangars">
+                <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">open_with</i>Drones</a>
+            </li>
+            <li><a href="/droppoints">
+                <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">pin_drop</i>DropPoints</a>
+            </li>
+            <li><a href="/meteostations">
+                <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">satellite</i>Stations</a>
+            </li>
+            <li><a onclick="refresh_kml('{{ url }}')">
+                <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">autorenew</i>Refresh KML</a>
+            </li>
+        </ul>
+        <a href="#"  data-activates="slide-out" class="button-collapse  show-on-large"><i class="mdi-navigation-menu"></i></a>
+    </nav>
+</div>
 
-        {% block content %}
-        {% endblock content %}
-    </body>
-    <footer class="page-footer" style="position: fixed;">
-        <div class="footer-copyright">
-            <div class="container">
-                © 2015 Open Source
-                <a class="grey-text text-lighten-4 right" href="http://www.faeddroneproject.com/">FAED Project</a>
-            </div>
+{% block content %}
+{% endblock content %}
+</body>
+<footer class="page-footer" style="position: fixed;">
+    <div class="footer-copyright">
+        <div class="container">
+            © 2015 Open Source
+            <a class="grey-text text-lighten-4 right" href="http://www.faeddroneproject.com/">FAED Project</a>
         </div>
-    </footer>
+    </div>
+</footer>
 </html>

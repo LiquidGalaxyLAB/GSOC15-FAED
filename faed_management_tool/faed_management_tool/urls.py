@@ -24,6 +24,9 @@ from django.views.generic.base import TemplateView
 from rest_framework import routers
 from faed_management import views
 
+from faed_management.static.py_func.sendtoLG import sync_kmls_file
+from faed_management.static.py_func.sendtoLG import sync_kmls_to_galaxy
+
 
 router = routers.DefaultRouter()
 router.register(r'hangars', views.HangarViewSet, 'hangars')
@@ -31,8 +34,11 @@ router.register(r'droppoints', views.DropPointViewSet, 'droppoints')
 router.register(r'meteostations', views.MeteoStationViewSet, 'meteostations')
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='index.html')),
-    url(r'^index/$', TemplateView.as_view(template_name='index.html')),
+    # url(r'^$', TemplateView.as_view(template_name='index.html')),
+    # url(r'^index/$', Templates_view(template_name='index.html')),
+
+    url(r'^$', views.base, name="base"),
+    url(r'^index/$', views.base, name="index"),
 
     url(r'^admin/', include(admin.site.urls)),
 
@@ -73,7 +79,7 @@ urlpatterns = [
     url(r'^droneform/$', views.submit_drone),
     url(r'^drone/(?P<drone_plate>\w+)/$', drone_detail),
 
-
+    url(r'^refresh_kml/$', views.refresh_kml),
     url(r'^incidence/$', views.find_emergency_path),
     url(r'^refreshweather/$', views.refresh_weather),
 

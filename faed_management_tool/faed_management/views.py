@@ -12,6 +12,9 @@ from kmls_management.models import Kml
 from kmls_management import kml_generator
 from faed_management.static.py_func.weather import can_fly, generate_weather, \
     generate_weather_image
+
+from faed_management.static.py_func.sendtoLG import \
+    get_server_ip, sync_kmls_file, sync_kmls_to_galaxy
 from serializers import HangarSerializer, DropPointSerializer, \
     MeteoStationSerializer
 from faed_management.models import Hangar, DropPoint, MeteoStation, StyleURL, \
@@ -445,3 +448,15 @@ def refresh_weather(request):
             return HttpResponse(f.read(), content_type="image/png")
     except IOError:
         return HttpResponse(status=201)
+
+
+def refresh_kml(request):
+    sync_kmls_file()
+    sync_kmls_to_galaxy()
+    return HttpResponse("Done")
+
+
+def base(request):
+    ip = get_server_ip()
+    url_base = "http://" + str(ip)[0:(len(ip) - 1)] + ":8000/"
+    return render(request, 'index.html', {'url_base': url_base})

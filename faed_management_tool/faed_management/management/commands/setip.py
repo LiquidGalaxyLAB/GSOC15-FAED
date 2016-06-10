@@ -69,6 +69,8 @@ class Command(BaseCommand):
         try:
             Kml.objects.all().delete()
             Incidence.objects.all().delete()
+            sync_kmls_file()
+            sync_kmls_to_galaxy()
         except Exception:
             self.stdout.write(self.style.error("Error deleting data from" +
                                                " the tables."))
@@ -102,5 +104,5 @@ class Command(BaseCommand):
         self.stdout.write("Creating Droppoints Kml...")
         for item in DropPoint.objects.all():
             name = "droppoint_" + str(item.id) + ".kml"
-            Kml(name=name, url=path + name).save()
             create_droppoint_marker(item, path + name)
+            Kml(name=name, url=path + name).save()
