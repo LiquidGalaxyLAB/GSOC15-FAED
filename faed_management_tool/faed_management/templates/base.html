@@ -86,9 +86,32 @@
 
             }
 
+            map.addListener('rightclick', function(e) {
+                placeMarkerAndPanTo(e.latLng, map);
+            });
+
         }
 
         google.maps.event.addDomListener(window, 'load', initialize);
+
+        var infowindow = new google.maps.InfoWindow({
+        });
+
+        var marker = new google.maps.Marker({
+
+        });
+
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });
+
+        function placeMarkerAndPanTo(latLng, map) {
+            marker.setPosition(latLng)
+            marker.setMap(map)
+            map.panTo(latLng);
+            infowindow.setContent("<a onclick=\"show_incidence(\'" + "{{ url_base }}" + "incidence/?lat=" + latLng.lat() + "&lng=" + latLng.lng() + "\')\">Create Emergency</a>");
+            infowindow.open(map, marker);
+        }
 
     </script>
 
@@ -161,9 +184,14 @@
             })
 
         });
+
         function refresh_kml(url){
             url_to = url + "refresh_kml";
             $.ajax({url: url_to});
+        }
+
+        function show_incidence(url){
+            $.ajax({url: url});
         }
 
 
