@@ -4,7 +4,7 @@ from django.contrib.gis.measure import D
 from django.contrib.gis.geos.point import Point
 from django.views.generic import ListView
 from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from rest_framework import viewsets
 import forms
 import models
@@ -441,11 +441,9 @@ def generate_mission_file(hangar):
 
 
 def refresh_weather(request):
-    generate_weather_image(os.path.dirname(__file__))
+    path_to_kml = generate_weather_image(os.path.dirname(__file__))
     try:
-        with open(os.path.dirname(__file__) +
-                  "/static/img/temperature.png", "rb") as f:
-            return HttpResponse(f.read(), content_type="image/png")
+        return FileResponse(open(path_to_kml, 'rb'))
     except IOError:
         return HttpResponse(status=201)
 

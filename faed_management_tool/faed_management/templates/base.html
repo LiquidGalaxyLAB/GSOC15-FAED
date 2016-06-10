@@ -98,7 +98,7 @@
         });
 
         var marker = new google.maps.Marker({
-
+            icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
         });
 
         marker.addListener('click', function() {
@@ -109,7 +109,7 @@
             marker.setPosition(latLng)
             marker.setMap(map)
             map.panTo(latLng);
-            infowindow.setContent("<a onclick=\"show_incidence(\'" + "{{ url_base }}" + "incidence/?lat=" + latLng.lat() + "&lng=" + latLng.lng() + "\')\">Create Emergency</a>");
+            infowindow.setContent("<a onclick=\"show_incidence(\'" + "{{ url_base }}" + "incidence/?lat=" + latLng.lat() + "&lng=" + latLng.lng() + "\')\" style=\"cursor: pointer;\">Create Emergency</a>");
             infowindow.open(map, marker);
         }
 
@@ -223,7 +223,7 @@
                 <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">autorenew</i>Refresh KML</a>
             </li>
         </ul>
-        <a href="#"  data-activates="slide-out" class="button-collapse  show-on-large"><i class="mdi-navigation-menu"></i></a>
+        <a href="#" style="cursor: pointer"  data-activates="slide-out" class="button-collapse  show-on-large"><i class="mdi-navigation-menu"></i></a>
     </nav>
 </div>
 

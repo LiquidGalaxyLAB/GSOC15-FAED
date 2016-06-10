@@ -87,8 +87,8 @@ class Command(BaseCommand):
         generate_weather_image(BASE_DIR + "/faed_management", app_ip)
         # generate_weather(BASE_DIR + "/faed_management/static/kml")
         self.stdout.write("KMLs done")
-        # sync_kmls_file()
-        # sync_kmls_to_galaxy()
+        sync_kmls_file()
+        sync_kmls_to_galaxy()
 
     def create_hangars(self, path):
         self.stdout.write("Creating Hangars Kml...")

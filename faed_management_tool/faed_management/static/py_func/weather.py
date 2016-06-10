@@ -5,7 +5,7 @@ import os
 from kmls_management import kml_generator
 from kmls_management.models import Kml
 from faed_management.static.py_func.sendtoLG import get_server_ip
-from kmls_management.kml_generator import manage_meteo
+from kmls_management.kml_generator import manage_kml, meteo_kml
 
 lleida = "3118514"
 
@@ -44,17 +44,21 @@ def generate_weather_image(path, ip=None):
         data['main']['pressure'], data['main']['humidity'])
     print "html done"
     generate_image(path)
+    if ip is None:
+        ip = get_server_ip()
+        base_url = "http://" + str(ip)[0:(len(ip) - 1)] + ":8000/"
+    else:
+        base_url = "http://" + str(ip) + "/"
+    print "generating meteo"
+    meteo_url = base_url + "static/img/temperature.png"
+    meteo_kml(path + "/static/kml/meteo", meteo_url)
     if not Kml.objects.filter(name="managemeteo.kml"):
-        if ip is not None:
-            url_kml = "http://" + str(ip) + "/refreshweather"
-        else:
-            ip_server = get_server_ip()
-            url_kml = "http://" + str(ip_server)[0:(len(ip_server) - 1)] + \
-                      ":8000/refreshweather"
+        url_kml = base_url + "refreshweather"
         print url_kml
-        manage_meteo(path + "/static/kml/managemeteo", url_kml, 30)
+        manage_kml(path + "/static/kml/managemeteo", url_kml, 600)
         Kml(name="managemeteo.kml",
             url=path + "/static/kml/managemeteo.kml").save()
+    return path + "/static/kml/meteo.kml"
 
 
 def generate_html(path, description, id_icon, lat, lon, temp, temp_max,

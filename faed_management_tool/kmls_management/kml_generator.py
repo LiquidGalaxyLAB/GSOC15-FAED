@@ -71,7 +71,7 @@ def manage_kml(filename, url, refresh_time):
 '''
 
 
-def manage_meteo(filename, url, refresh_time):
+def meteo_kml(filename, url):
     with open(filename + ".kml", "w") as kml_file:
         kml_file.write(
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -80,9 +80,6 @@ def manage_meteo(filename, url, refresh_time):
             "\t\t<ScreenOverlay>\n" +
             "\t\t\t<Icon>\n" +
             "\t\t\t\t<href>" + url + "</href>\n" +
-            "\t\t\t\t<refreshMode>onInterval</refreshMode>\n" +
-            "\t\t\t\t<refreshInterval>" + str(refresh_time) +
-            "</refreshInterval>\n" +
             "\t\t\t</Icon>\n" +
             "\t\t\t<overlayXY x='0' y='-1' xunits='fraction' " +
             "yunits='fraction'/>\n" +
