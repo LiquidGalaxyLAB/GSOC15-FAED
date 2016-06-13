@@ -4,10 +4,10 @@ import re
 from kmls_management.models import Kml
 from faed_management.models import Incidence, Hangar, DropPoint
 from faed_management.static.py_func.sendtoLG import sync_kmls_file, \
-    sync_kmls_to_galaxy
+    sync_kmls_to_galaxy, get_server_ip
 from faed_management.static.py_func.weather import generate_weather
 from kmls_management.kml_generator import create_hangar_polygon, \
-    create_droppoint_marker, hangar_influence
+    create_droppoint_marker, hangar_influence, faed_logo_kml
 from faed_management_tool.settings import BASE_DIR
 
 
@@ -41,7 +41,8 @@ class Command(BaseCommand):
             if patternIp.match(parsed_ip) or patternIpAddr.match(parsed_ip):
                 write_ip(parsed_ip)
                 if not options['addrport']:
-                    app_ip = "127.0.0.1:8000"
+                    ip_server = get_server_ip()
+                    app_ip = str(ip_server)[0:(len(ip_server) - 1)] + ":8000"
                 else:
                     app_ip = options['addrport']
                 self.stdout.write(self.style.SUCCESS(
@@ -81,6 +82,7 @@ class Command(BaseCommand):
     def create_base_kml(self, app_ip, path):
         self.create_hangars(path)
         self.create_droppoints(path)
+        self.create_logo(path, app_ip)
         self.stdout.write("Creating Weather Kml...")
         generate_weather(BASE_DIR + "/faed_management/static/kml/")
         self.stdout.write("KMLs done")
@@ -101,3 +103,10 @@ class Command(BaseCommand):
             name = "droppoint_" + str(item.id) + ".kml"
             create_droppoint_marker(item, path + name)
             Kml(name=name, url=path + name).save()
+
+    def create_logo(self, path, app_ip):
+        self.stdout.write("Creating Logo Kml...")
+        name = "faed_logo"
+        faed_logo_kml(path + name, "http://" + app_ip +
+                      "/static/img/static_icon.png")
+        Kml(name=name + ".kml", url=path + name + ".kml").save()

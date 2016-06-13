@@ -71,7 +71,7 @@ def manage_kml(filename, url, refresh_time):
 '''
 
 
-def meteo_kml(filename, url):
+def faed_logo_kml(filename, url):
     with open(filename + ".kml", "w") as kml_file:
         kml_file.write(
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -81,13 +81,13 @@ def meteo_kml(filename, url):
             "\t\t\t<Icon>\n" +
             "\t\t\t\t<href>" + url + "</href>\n" +
             "\t\t\t</Icon>\n" +
-            "\t\t\t<overlayXY x='0' y='-1' xunits='fraction' " +
+            "\t\t\t<overlayXY x='0' y='1' xunits='fraction' " +
             "yunits='fraction'/>\n" +
-            "\t\t\t<screenXY x='0' y='-250' xunits='fraction' " +
-            "yunits='pixels'/>\n" +
+            "\t\t\t<screenXY x='0' y='1' xunits='fraction' " +
+            "yunits='fraction'/>\n" +
             "\t\t\t<rotationXY x='0' y='0' xunits='fraction' " +
             "yunits='fraction'/>\n" +
-            "\t\t\t<size x='0' y='0' xunits='fraction' " +
+            "\t\t\t<size x='0.4' y='0.3' xunits='fraction' " +
             "yunits='fraction'/>\n" +
             "\t\t</ScreenOverlay>\n" +
             "\t</Document>\n" +

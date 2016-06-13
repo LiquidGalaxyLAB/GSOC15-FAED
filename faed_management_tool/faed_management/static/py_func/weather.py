@@ -1,10 +1,8 @@
 from faed_management_tool.settings import WEATHER_API_KEY
 import json
 import requests
-import os
 from kmls_management.models import Kml
-from faed_management.static.py_func.sendtoLG import get_server_ip
-from kmls_management.kml_generator import manage_kml, meteo_kml, weather_info
+from kmls_management.kml_generator import manage_kml, weather_info
 
 lleida = "3118514"
 
