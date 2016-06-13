@@ -10,8 +10,7 @@ import forms
 import models
 from kmls_management.models import Kml
 from kmls_management import kml_generator
-from faed_management.static.py_func.weather import can_fly, generate_weather, \
-    generate_weather_image
+from faed_management.static.py_func.weather import can_fly, generate_weather
 
 from faed_management.static.py_func.sendtoLG import \
     get_server_ip, sync_kmls_file, sync_kmls_to_galaxy
@@ -384,7 +383,7 @@ def find_emergency_path(request):
     lat = request.GET.get('lat', '')
     lon = request.GET.get('lng', '')
     path = os.path.dirname(__file__) + "/static/kml/"
-    # generate_weather(path)
+    generate_weather(path)
     last_distance = sys.maxint
     all_hangars = models.Hangar.objects.all()
     selected_hangar = None
@@ -438,14 +437,6 @@ def generate_mission_file(hangar):
                 str(hangar.altitude) +
                 "\t1\n3\t0\t3\t21\t0.000000\t0.000000\t" +
                 "0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t1\n")
-
-
-def refresh_weather(request):
-    path_to_kml = generate_weather_image(os.path.dirname(__file__))
-    try:
-        return FileResponse(open(path_to_kml, 'rb'))
-    except IOError:
-        return HttpResponse(status=201)
 
 
 def refresh_kml(request):
