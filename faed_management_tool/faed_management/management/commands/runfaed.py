@@ -5,8 +5,7 @@ from kmls_management.models import Kml
 from faed_management.models import Incidence, Hangar, DropPoint
 from faed_management.static.py_func.sendtoLG import sync_kmls_file, \
     sync_kmls_to_galaxy
-from faed_management.static.py_func.weather import generate_weather, \
-    generate_weather_image
+from faed_management.static.py_func.weather import generate_weather
 from kmls_management.kml_generator import create_hangar_polygon, \
     create_droppoint_marker, hangar_influence
 from faed_management_tool.settings import BASE_DIR
@@ -50,11 +49,10 @@ class Command(BaseCommand):
                 path = BASE_DIR + "/faed_management/static/kml/"
                 # Erasing the files and Databases with KMl and
                 # other dynamic information created during the FAED run.
-                self.clear_databases()
-                os.system("rm -r " + path + "*")
-                print "rm -r " + path + "*"
-                # Creating the KMl files with the information of the Database
                 self.create_system_files()
+                os.system("rm -r " + path + "*")
+                self.clear_databases()
+                # Creating the KMl files with the information of the Database
                 self.create_base_kml(app_ip, path)
                 os.system("python manage.py runserver " + app_ip)
             else:
@@ -84,11 +82,8 @@ class Command(BaseCommand):
         self.create_hangars(path)
         self.create_droppoints(path)
         self.stdout.write("Creating Weather Kml...")
-        generate_weather_image(BASE_DIR + "/faed_management", app_ip)
-        # generate_weather(BASE_DIR + "/faed_management/static/kml")
+        generate_weather(BASE_DIR + "/faed_management/static/kml/")
         self.stdout.write("KMLs done")
-        sync_kmls_file()
-        sync_kmls_to_galaxy()
 
     def create_hangars(self, path):
         self.stdout.write("Creating Hangars Kml...")

@@ -14,6 +14,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# This path can be different depending where the installation has done.
 GEOS_LIBRARY_PATH = '/usr/local/lib/libgeos_c.so'
 
 # Quick-start development settings - unsuitable for production
@@ -27,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# We need to export our API key to environment
+# Api Key obtained in openweathermap.org
 WEATHER_API_KEY = os.environ['WEATHER_API_KEY']
 
 # Application definition

@@ -81,7 +81,6 @@ urlpatterns = [
 
     url(r'^refresh_kml/$', views.refresh_kml),
     url(r'^incidence/$', views.find_emergency_path),
-    url(r'^refreshweather/$', views.refresh_weather),
 
 
 ]
