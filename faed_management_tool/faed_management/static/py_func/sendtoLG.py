@@ -16,6 +16,7 @@ def read_file():
 
 def sync_kmls_to_galaxy(emergency=False):
     file_path = "/tmp/kml/kmls.txt"
+    file_path_slave = "/tmp/kml/kmls_slave.txt"
     server_path = "/var/www/html"
     if not emergency:
         # os.system(
@@ -23,6 +24,9 @@ def sync_kmls_to_galaxy(emergency=False):
         #     "lg@" + read_file() + ":" + server_path)
         os.system(
         "sshpass -p 'lqgalaxy' scp " + file_path + " lg@" + read_file() +
+        ":" + server_path)
+        os.system(
+        "sshpass -p 'lqgalaxy' scp " + file_path_slave + " lg@" + read_file() +
         ":" + server_path)
         time.sleep(1)
     # print "sshpass -p 'lqgalaxy' scp " + file_path + " lg@" + read_file() +
@@ -44,21 +48,25 @@ def a():
 
 
 def sync_kmls_file():
-    # print "enter"
     ip_server = get_server_ip()
     os.system("rm /tmp/kml/kmls.txt")
     os.system("touch /tmp/kml/kmls.txt")
     file = open("/tmp/kml/kmls.txt", 'w')
-    for i in Kml.objects.all():
+    for i in Kml.objects.filter(visibility=1):
         file.write("http://" + str(ip_server)[0:(len(ip_server) - 1)] +
                    ":8000/static/kml/" + i.name + "\n")
-        # print "http://" + str(ip_server)[0:(len(ip_server) - 1)] +
-        # ":8000/static/kml/" + "manage" + str(i.id) + "\n"
-        # file.write("http://" + str(ip_server)[0:(len(ip_server) - 1)] +
-        # ":8000/static/kml/" + i.name + "\n")
-    # file.write("http://"+ str(ip_server)[0:(len(ip_server)-1)] +
-    # ":8000/static/kml/ex_w.kml\n")
+    file.close()
+    sync_kmls_slave_file()
 
+
+def sync_kmls_slave_file():
+    ip_server = get_server_ip()
+    os.system("rm /tmp/kml/kmls_slave.txt")
+    os.system("touch /tmp/kml/kmls_slave.txt")
+    file = open("/tmp/kml/kmls_slave.txt", 'w')
+    for i in Kml.objects.filter(visibility=0):
+        file.write("http://" + str(ip_server)[0:(len(ip_server) - 1)] +
+                   ":8000/static/kml/" + i.name + "\n")
     file.close()
 
 

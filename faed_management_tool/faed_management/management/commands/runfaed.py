@@ -78,6 +78,7 @@ class Command(BaseCommand):
         self.stdout.write("Creating startUp files...")
         os.system("mkdir /tmp/kml")
         os.system("touch /tmp/kml/kmls.txt")
+        os.system("touch /tmp/kml/kmls_slave.txt")
 
     def create_base_kml(self, app_ip, path):
         self.create_hangars(path)
@@ -109,4 +110,4 @@ class Command(BaseCommand):
         name = "faed_logo"
         faed_logo_kml(path + name, "http://" + app_ip +
                       "/static/img/static_icon.png")
-        Kml(name=name + ".kml", url=path + name + ".kml").save()
+        Kml(name=name + ".kml", url=path + name + ".kml", visibility=0).save()

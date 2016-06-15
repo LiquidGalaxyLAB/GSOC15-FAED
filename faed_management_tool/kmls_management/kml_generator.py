@@ -87,7 +87,7 @@ def faed_logo_kml(filename, url):
             "yunits='fraction'/>\n" +
             "\t\t\t<rotationXY x='0' y='0' xunits='fraction' " +
             "yunits='fraction'/>\n" +
-            "\t\t\t<size x='0.4' y='0.3' xunits='fraction' " +
+            "\t\t\t<size x='0.2' y='0.15' xunits='fraction' " +
             "yunits='fraction'/>\n" +
             "\t\t</ScreenOverlay>\n" +
             "\t</Document>\n" +

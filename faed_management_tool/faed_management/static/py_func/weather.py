@@ -27,7 +27,7 @@ def generate_weather(path):
         data['main']['pressure'], data['main']['humidity'],
         data['weather'][0]['description'])
     if not Kml.objects.filter(name="meteo_info.kml"):
-        Kml(name="meteo_info.kml", url=path + "meteo_info.kml").save()
+        Kml(name="meteo_info.kml", url=path + "meteo_info.kml", visibility=0).save()
 
 
 def can_fly():
