@@ -3,3 +3,4 @@ djangorestframework
 requests
 simplekml
 polycircles
+geopy
