@@ -446,6 +446,4 @@ def refresh_kml(request):
 
 
 def base(request):
-    ip = get_server_ip()
-    url_base = "http://" + str(ip)[0:(len(ip) - 1)] + ":8000/"
-    return render(request, 'index.html', {'url_base': url_base})
+    return render(request, 'index.html')

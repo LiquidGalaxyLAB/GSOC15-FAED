@@ -48,8 +48,8 @@
         var hangars = {};
         var droppoints = [];
 
-        hangars = loadHangars("{{ url_base }}");
-        droppoints = loadDroppoints("{{ url_base }}");
+        hangars = loadHangars();
+        droppoints = loadDroppoints();
 
 
         var cityCircle;
@@ -62,7 +62,7 @@
             var mapOptions = {
                 zoom: 13,
                 center: new google.maps.LatLng(41.617147, 0.624870),
-                mapTypeId: google.maps.MapTypeId.TERRAIN
+                mapTypeId: google.maps.MapTypeId.HYBRID
             };
 
             map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -75,7 +75,6 @@
                     addMarkerIcon(hangars[city].center, map, image1, hangars[city].title);
                     addCircle(hangars[city].center, map, hangars[city].title, hangars[city].radius);
                 }
-                refresh_kml('{{ url }}')
             }
 
 
@@ -185,8 +184,8 @@
 
         });
 
-        function refresh_kml(url){
-            url_to = url + "refresh_kml";
+        function refresh_kml(){
+            url_to = "/refresh_kml";
             $.ajax({url: url_to});
         }
 
@@ -211,7 +210,7 @@
                 <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">map</i>Map</a>
             </li>
             <li><a href="/hangars">
-                <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">open_with</i>Drones</a>
+                <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">open_with</i>Hangars</a>
             </li>
             <li><a href="/droppoints">
                 <i class="material-icons small" style="margin: 10px; position:relative; top:7px;">pin_drop</i>DropPoints</a>

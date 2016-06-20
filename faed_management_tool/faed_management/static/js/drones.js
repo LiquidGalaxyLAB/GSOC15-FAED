@@ -76,11 +76,11 @@ var contentString = '<div id="content">'+
 
 
 
-function loadHangars(url_base){
+function loadHangars(){
 
 var hangar = {}
 
-var url = url_base + "api/hangars/?format=json";
+var url = "/api/hangars/?format=json";
 console.log(url)
 $.getJSON( url, function( data ) {
   var items = [];
@@ -105,11 +105,11 @@ return hangar;
 }
 
 
-function loadDroppoints(url_base){
+function loadDroppoints(){
 
 var droppoint = {}
 
-var url = url_base + "api/droppoints/?format=json";
+var url = "/api/droppoints/?format=json";
 
 $.getJSON( url, function( data ) {
   var items = [];

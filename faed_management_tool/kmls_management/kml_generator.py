@@ -17,7 +17,7 @@ kml_path = "/static/kml"
 def placemark_kml(drone, geo_point, filename):
     ip_server = get_server_ip()
     pic_url = "http://" + str(ip_server)[0:(len(ip_server) - 1)] + \
-              ":8000/static/img/kinton_drone.png"
+              ":8000/static/img/ICON_LG_FAED.png"
     with open(filename, "w") as kml_file:
         kml_file.write(
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -95,6 +95,7 @@ def faed_logo_kml(filename, url):
 
 
 def circle_kml(points, filename):
+    print points
     with open(filename, "w") as kml_file:
         kml_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                        "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n" +
@@ -179,27 +180,39 @@ def hangar_influence(hangar, path):
     print name
 
     polycircle = polycircles.Polycircle(latitude=hangar.latitude,
-                                        longitude=hangar.longitude,
-                                        radius=hangar.radius,
-                                        number_of_vertices=36)
+                                              longitude=hangar.longitude,
+                                              radius=hangar.radius,
+                                              number_of_vertices=36)
+    kml = simplekml.Kml()
     points_list = polycircle.to_lat_lon()
     latlonalt = []
-    for points_tuple in points_list:
-        tup = (points_tuple[1], points_tuple[0], 5)
-        latlonalt.append(tup)
-
-    kml = simplekml.Kml(open=1)
-    shape_polycircle = kml.newmultigeometry(name=hangar.name)
-    pol = shape_polycircle.newpolygon()
+    print points_list
+    for idx, points_tuple in enumerate(points_list):
+        if idx == 0:
+            first_point = (points_tuple[1], points_tuple[0])
+        tup = (points_tuple[1], points_tuple[0])
+        latlonalt.insert(0, tup)
+    latlonalt.insert(0, first_point)
+    #
+    # kml = simplekml.Kml(open=1)
+    # shape_polycircle = kml.newmultigeometry(name=hangar.name)
+    # pol = shape_polycircle.newpolygon()
+    pol = kml.newpolygon(name=name)
     pol.outerboundaryis = latlonalt
-
-    pol.altitudemode = simplekml.AltitudeMode.relativetoground
-    pol.extrude = 5
-    pol.style.polystyle.color = '22ff0000'
-    pol.style.polystyle.fill = 1
-    pol.style.polystyle.outline = 1
-    pol.style.linestyle.width = 10
+    # Line Style
     pol.style.linestyle.color = simplekml.Color.red
+    pol.style.linestyle.width = 20
+    # If you want to see the filled polygon needs to enable relative to ground
+    # pol.style.polystyle.fill = 1
+    # pol.style.polystyle.outline = 1
+    # pol.style.polystyle.color = simplekml.Color.changealphaint(100, simplekml.Color.blue)
+    # pol.altitudemode = simplekml.AltitudeMode.relativetoground
+    # pol.extrude = 5
+    # pol.style.polystyle.color = '22ff0000'
+    # pol.style.polystyle.fill = 1
+    # pol.style.polystyle.outline = 1
+    # pol.style.linestyle.width = 20
+    # pol.style.linestyle.color = simplekml.Color.red
 
     '''
     pol = kml.newpolygon(name=hangar.description,

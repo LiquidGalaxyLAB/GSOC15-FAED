@@ -24,6 +24,7 @@ function initialize() {
   var mapOptions = {
     zoom: 8,
     center: catalunya,
+    mapTypeId: google.maps.MapTypeId.HYBRID
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -37,8 +38,6 @@ addMarker(myLatlng);
     lng=event.latLng.K;
     $('input#id_latitude').val(lat);
     $('input#id_longitude').val(lng);
-
-
   });
 
 
