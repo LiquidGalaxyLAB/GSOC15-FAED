@@ -64,6 +64,8 @@ urlpatterns = [
 
     url(r'^cityform/$', views.submit_city),
 
+    url(r'^altitude/(?P<latitude>\d+\.\d+)/(?P<longitude>\d+\.\d+)/$', views.get_altitude, name='latitude'),
+
 
     # url(r'^meteostations/$',
     # MeteoStationsView.as_view(), name='meteostations_list'),

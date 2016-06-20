@@ -1,5 +1,8 @@
 import os
 import sys
+import requests
+import json
+
 from django.contrib.gis.measure import D
 from django.contrib.gis.geos.point import Point
 from django.views.generic import ListView
@@ -447,3 +450,15 @@ def refresh_kml(request):
 
 def base(request):
     return render(request, 'index.html')
+
+
+# Helpers
+
+
+def get_altitude(request, latitude, longitude):
+    url = 'https://maps.googleapis.com/maps/api/elevation/json'
+    params = {'locations': '{0},{1}'.format(latitude, longitude)}
+    resp = requests.get(url=url, params=params)
+    data = json.loads(resp.text)
+    elevation = data['results'][0]['elevation']
+    return HttpResponse(elevation)

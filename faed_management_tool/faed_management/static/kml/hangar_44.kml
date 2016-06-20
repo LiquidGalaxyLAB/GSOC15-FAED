@@ -10,8 +10,8 @@
 			</PolyStyle>
 		</Style>
 		<Placemark>
-			<name>Random</name>
-			<description>Random</description>
+			<name>Hospital Arnau de Vilanova</name>
+			<description>Arnau de Vilanova</description>
 			<styleUrl>#Red</styleUrl>
 			<Polygon>
 				<extrude>1</extrude>
@@ -19,11 +19,11 @@
 				<outerBoundaryIs>
 					<LinearRing>
 						<coordinates>
-							0.65,41.0,200.0
-							0.65,41.0001,200.0
-							0.6501,41.0001,200.0
-							0.6501,41.0,200.0
-							0.65,41.0,200.0
+							0.6128985,41.6267563,200.0
+							0.6128985,41.6268563,200.0
+							0.6129985,41.6268563,200.0
+							0.6129985,41.6267563,200.0
+							0.6128985,41.6267563,200.0
 						</coordinates>
 					</LinearRing>
 				</outerBoundaryIs>

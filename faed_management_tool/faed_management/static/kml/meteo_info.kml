@@ -5,25 +5,25 @@ xmlns:gx="http://www.google.com/kml/ext/2.2">
 		<name>Weather Station Lleida</name>
 		<gx:balloonVisibility>1</gx:balloonVisibility>
 		<description><![CDATA[
-			<p><font size=5><b>Temperature</b> - 25.02C</font></p>
-			<p><font size=5 color="blue"><b>Temperature max. - 25.56C</b></font></p>
-			<p><font size=5 color="red"><b>Temperature min. - 24</b></font></p>
-			<p><font size=5><b>Wind - 4.6m/s</b></font></p>
-			<p><font size=5><b>Clouds - 75%</b></font></p>
-			<p><font size=5><b>Pressure - 1013 hpa</b></font></p>
-			<p><font size=5><b>Humidity - 78%</b></font></p>
+			<p><font size=5><b>Temperature</b> - 24.24C</font></p>
+			<p><font size=5 color="blue"><b>Temperature max. - 25.9C</b></font></p>
+			<p><font size=5 color="red"><b>Temperature min. - 22.78</b></font></p>
+			<p><font size=5><b>Wind - 1.03m/s</b></font></p>
+			<p><font size=5><b>Clouds - 0%</b></font></p>
+			<p><font size=5><b>Pressure - 1018 hpa</b></font></p>
+			<p><font size=5><b>Humidity - 0%</b></font></p>
 			<hr>
 			Location:<br>
 			<p><font size=5><b>Latitude - 41.62</b></font></p>
 			<p><font size=5><b>Longitude - 0.62</b></font></p>
-			<p><font size=5><b>Sky status - broken clouds</b></font></p>
+			<p><font size=5><b>Sky status - clear sky</b></font></p>
 			<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
 			<hr>
 			</br>
 			<font face=arial>Arial</font><br>
 		]]></description>
 		<Point>
-			<coordinates>-122.0822035425683,37.42228990140251,0</coordinates>
+			<coordinates>-122.0822035425683,37.42228990140251,0 </coordinates>
 		</Point>
 	</Placemark>
 </kml>

@@ -34,10 +34,16 @@ addMarker(myLatlng);
     setAllMap(null);
 
     addMarker(event.latLng);
-    lat=event.latLng.G;
-    lng=event.latLng.K;
+    var lat = event.latLng.lat();
+    var lng = event.latLng.lng();
     $('input#id_latitude').val(lat);
     $('input#id_longitude').val(lng);
+
+    // retrieve altitude
+    getAltitude(lat, lng, function(altitude) {
+      $('input#id_altitude').val(altitude);
+    });
+
   });
 
 
@@ -73,6 +79,12 @@ function showMarkers() {
 function deleteMarkers() {
   clearMarkers();
   markers = [];
+}
+
+// Returns altitude / elevation of given a current latitude and longitude
+function getAltitude(lat, long, callback) {
+  var url = '/altitude/' + lat + '/' + long + '/';
+  $.get(url, (altitude) => callback(altitude));
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

@@ -95,7 +95,6 @@ def faed_logo_kml(filename, url):
 
 
 def circle_kml(points, filename):
-    print points
     with open(filename, "w") as kml_file:
         kml_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                        "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n" +
@@ -175,9 +174,7 @@ def create_hangar_polygon(hangar, filename):
 
 
 def hangar_influence(hangar, path):
-    print hangar.name, hangar.id
     name = "hangar_" + str(hangar.id) + "_inf.kml"
-    print name
 
     polycircle = polycircles.Polycircle(latitude=hangar.latitude,
                                               longitude=hangar.longitude,
@@ -186,7 +183,6 @@ def hangar_influence(hangar, path):
     kml = simplekml.Kml()
     points_list = polycircle.to_lat_lon()
     latlonalt = []
-    print points_list
     for idx, points_tuple in enumerate(points_list):
         if idx == 0:
             first_point = (points_tuple[1], points_tuple[0])
@@ -470,6 +466,5 @@ def create_drone_manage_route(path_name, id_incidence):
     manage_kml(path_name + "manage" + str(id_incidence), url_file, 0.5)
     Kml(name="manage" + str(id_incidence) + ".kml",
         url="static/kml/manage" + str(id_incidence) + ".kml").save()
-    print url_file
     sync_kml_galaxy()
     time.sleep(2)

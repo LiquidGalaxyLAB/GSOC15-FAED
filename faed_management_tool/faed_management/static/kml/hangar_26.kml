@@ -10,7 +10,7 @@
 			</PolyStyle>
 		</Style>
 		<Placemark>
-			<name>La Seu Vella </name>
+			<name>La Seu Vella</name>
 			<description>Placa Hispanoamerica, 1, 25004 Lleida</description>
 			<styleUrl>#Red</styleUrl>
 			<Polygon>
@@ -19,11 +19,11 @@
 				<outerBoundaryIs>
 					<LinearRing>
 						<coordinates>
-							0.6251358,41.6173115,200.0
-							0.6251358,41.6174115,200.0
-							0.6252358,41.6174115,200.0
-							0.6252358,41.6173115,200.0
-							0.6251358,41.6173115,200.0
+							0.6228433,41.618479,200.0
+							0.6228433,41.618579,200.0
+							0.6229433,41.618579,200.0
+							0.6229433,41.618479,200.0
+							0.6228433,41.618479,200.0
 						</coordinates>
 					</LinearRing>
 				</outerBoundaryIs>

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
-    <Document>
-        <ScreenOverlay>
-            <name>FAED Project Icon</name>
-            <Icon>
-                <href>http://172.26.17.106:8000/static/img/static_icon.png</href>
-            </Icon>
-            <overlayXY x="0" y="1" xunits="fraction" yunits="fraction"/>
-            <screenXY x="0" y="1" xunits="fraction" yunits="fraction"/>
-            <rotationXY x="0" y="0" xunits="fraction" yunits="fraction"/>
-            <size x="0.4" y="0.3" xunits="fraction" yunits="fraction"/>
-        </ScreenOverlay>
-    </Document>
+	<Document>
+		<ScreenOverlay>
+			<Icon>
+				<href>http://10.160.100.46:8000/static/img/static_icon.png</href>
+			</Icon>
+			<overlayXY x='0' y='1' xunits='fraction' yunits='fraction'/>
+			<screenXY x='0' y='1' xunits='fraction' yunits='fraction'/>
+			<rotationXY x='0' y='0' xunits='fraction' yunits='fraction'/>
+			<size x='0.2' y='0.15' xunits='fraction' yunits='fraction'/>
+		</ScreenOverlay>
+	</Document>
 </kml>

@@ -10,8 +10,8 @@
 			</PolyStyle>
 		</Style>
 		<Placemark>
-			<name>Barris Nord</name>
-			<description>Avinguda Prat de la Riba, 119, 25005 Lleida</description>
+			<name>Mangranes</name>
+			<description>Parroquia de Mangranes</description>
 			<styleUrl>#Red</styleUrl>
 			<Polygon>
 				<extrude>1</extrude>
@@ -19,11 +19,11 @@
 				<outerBoundaryIs>
 					<LinearRing>
 						<coordinates>
-							0.6313515,41.6268763,200.0
-							0.6313515,41.6269763,200.0
-							0.6314515,41.6269763,200.0
-							0.6314515,41.6268763,200.0
-							0.6313515,41.6268763,200.0
+							0.6666877,41.606991,200.0
+							0.6666877,41.607091,200.0
+							0.6667877,41.607091,200.0
+							0.6667877,41.606991,200.0
+							0.6666877,41.606991,200.0
 						</coordinates>
 					</LinearRing>
 				</outerBoundaryIs>

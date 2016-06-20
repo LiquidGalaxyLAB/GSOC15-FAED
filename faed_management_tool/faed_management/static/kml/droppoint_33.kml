@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
 	<Placemark>
-		<name>Meteo Station Lleida</name>
+		<name>DP13</name>
 		<visibility>1</visibility>
-		<description>Meteo Station Lleida</description>
+		<description>Camp</description>
 		<Style>
 			<IconStyle>
 				<Icon>
-					<href>http://maps.google.com/mapfiles/kml/shapes/partly_cloudy.png</href>
+					<href>http://maps.google.com/mapfiles/kml/pal4/icon28.png</href>
 				</Icon>
 			</IconStyle>
 			<LineStyle>
@@ -17,7 +17,7 @@
 		<Point>
 			<extrude>1</extrude>
 			<altitudeMode>relativeToGround</altitudeMode>
-			<coordinates>0.619198,41.619081,200.0</coordinates>
+			<coordinates>0.666636303049,41.6066114552,205.0</coordinates>
 		</Point>
 	</Placemark>
 </kml>
