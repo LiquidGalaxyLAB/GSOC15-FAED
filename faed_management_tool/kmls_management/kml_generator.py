@@ -71,7 +71,7 @@ def manage_kml(filename, url, refresh_time):
 '''
 
 
-def faed_logo_kml(filename, url):
+def faed_logo_kml(filename, url, p1, p2, size):
     with open(filename + ".kml", "w") as kml_file:
         kml_file.write(
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -81,13 +81,13 @@ def faed_logo_kml(filename, url):
             "\t\t\t<Icon>\n" +
             "\t\t\t\t<href>" + url + "</href>\n" +
             "\t\t\t</Icon>\n" +
-            "\t\t\t<overlayXY x='0' y='1' xunits='fraction' " +
+            "\t\t\t<overlayXY x='0' y='" + str(p1) + "' xunits='fraction' " +
             "yunits='fraction'/>\n" +
-            "\t\t\t<screenXY x='0' y='1' xunits='fraction' " +
+            "\t\t\t<screenXY x='0' y='" + str(p2) + "' xunits='fraction' " +
             "yunits='fraction'/>\n" +
             "\t\t\t<rotationXY x='0' y='0' xunits='fraction' " +
             "yunits='fraction'/>\n" +
-            "\t\t\t<size x='0.2' y='0.15' xunits='fraction' " +
+            "\t\t\t<size x='0.2' y='" + str(size) + "' xunits='fraction' " +
             "yunits='fraction'/>\n" +
             "\t\t</ScreenOverlay>\n" +
             "\t</Document>\n" +
@@ -122,6 +122,26 @@ def circle_kml(points, filename):
                        "\t\t</Placemark>\n" +
                        "\t</Document>\n" +
                        "</kml>")
+
+
+def create_general(filename, droppoints):
+    ip_server = get_server_ip()
+    url = "http://" + str(ip_server)[0:(len(ip_server) - 1)] + \
+                ":8000/static/kml/"
+    with open(filename, "w") as kml_file:
+        kml_file.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                       "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n" +
+                       "\t<Document>\n")
+        for dp in droppoints:
+            kml_file.write("\t\t<NetworkLink>\n" +
+                           "\t\t\t<Name>" + dp + "</Name>\n"
+                           "\t\t<Link>\n"
+                           "\t\t<href>" + url + dp + "</href>\n"
+                           "\t\t</Link>\n"
+                           "\t\t</NetworkLink>\n")
+        kml_file.write("\t</Document>\n" +
+                       "</kml>"
+                       )
 
 
 def create_hangar_polygon(hangar, filename):
@@ -180,7 +200,7 @@ def hangar_influence(hangar, path):
                                               longitude=hangar.longitude,
                                               radius=hangar.radius,
                                               number_of_vertices=36)
-    kml = simplekml.Kml()
+    # kml = simplekml.Kml()
     points_list = polycircle.to_lat_lon()
     latlonalt = []
     for idx, points_tuple in enumerate(points_list):
@@ -190,25 +210,25 @@ def hangar_influence(hangar, path):
         latlonalt.insert(0, tup)
     latlonalt.insert(0, first_point)
     #
-    # kml = simplekml.Kml(open=1)
-    # shape_polycircle = kml.newmultigeometry(name=hangar.name)
-    # pol = shape_polycircle.newpolygon()
-    pol = kml.newpolygon(name=name)
-    pol.outerboundaryis = latlonalt
+    kml = simplekml.Kml(open=1)
+    shape_polycircle = kml.newmultigeometry(name=hangar.name)
+    pol = shape_polycircle.newpolygon()
+    # pol = kml.newpolygon(name=name) # /
+    pol.outerboundaryis = latlonalt # /
     # Line Style
-    pol.style.linestyle.color = simplekml.Color.red
-    pol.style.linestyle.width = 20
+    # pol.style.linestyle.color = simplekml.Color.red # /
+    # pol.style.linestyle.width = 20 # /
     # If you want to see the filled polygon needs to enable relative to ground
-    # pol.style.polystyle.fill = 1
-    # pol.style.polystyle.outline = 1
-    # pol.style.polystyle.color = simplekml.Color.changealphaint(100, simplekml.Color.blue)
-    # pol.altitudemode = simplekml.AltitudeMode.relativetoground
-    # pol.extrude = 5
-    # pol.style.polystyle.color = '22ff0000'
-    # pol.style.polystyle.fill = 1
-    # pol.style.polystyle.outline = 1
-    # pol.style.linestyle.width = 20
-    # pol.style.linestyle.color = simplekml.Color.red
+    pol.style.polystyle.fill = 1
+    pol.style.polystyle.outline = 1
+    pol.style.polystyle.color = simplekml.Color.changealphaint(100, simplekml.Color.blue)
+    pol.altitudemode = simplekml.AltitudeMode.relativetoground
+    pol.extrude = 5
+    pol.style.polystyle.color = '22ff0000'
+    pol.style.polystyle.fill = 1
+    pol.style.polystyle.outline = 1
+    pol.style.linestyle.width = 20
+    pol.style.linestyle.color = simplekml.Color.red
 
     '''
     pol = kml.newpolygon(name=hangar.description,

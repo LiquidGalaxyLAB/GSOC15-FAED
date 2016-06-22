@@ -7,7 +7,7 @@ from faed_management.static.py_func.sendtoLG import sync_kmls_file, \
     sync_kmls_to_galaxy, get_server_ip
 from faed_management.static.py_func.weather import generate_weather
 from kmls_management.kml_generator import create_hangar_polygon, \
-    create_droppoint_marker, hangar_influence, faed_logo_kml
+    create_droppoint_marker, hangar_influence, faed_logo_kml, create_general
 from faed_management_tool.settings import BASE_DIR
 
 
@@ -98,16 +98,44 @@ class Command(BaseCommand):
             Kml(name=name, url=path + name).save()
             Kml(name=name_inf, url=path + name_inf).save()
 
+    # def create_droppoints(self, path):
+    #     self.stdout.write("Creating Droppoints Kml...")
+    #     for item in DropPoint.objects.all():
+    #         print item.description
+    #         name = "droppoint_" + str(item.id) + ".kml"
+    #         create_droppoint_marker(item, path + name)
+    #         Kml(name=name, url=path + name).save()
+
     def create_droppoints(self, path):
         self.stdout.write("Creating Droppoints Kml...")
+        dp = []
         for item in DropPoint.objects.all():
+            print item.description
             name = "droppoint_" + str(item.id) + ".kml"
             create_droppoint_marker(item, path + name)
-            Kml(name=name, url=path + name).save()
+            dp.append(name)
+        name_general = "general_dp.kml"
+        create_general(path + name_general, dp)
+        Kml(name=name_general, url=path + name_general).save()
 
     def create_logo(self, path, app_ip):
         self.stdout.write("Creating Logo Kml...")
         name = "faed_logo"
         faed_logo_kml(path + name, "http://" + app_ip +
-                      "/static/img/static_icon.png")
+                      "/static/img/static_icon.png", 1, 1, 0.15)
         Kml(name=name + ".kml", url=path + name + ".kml", visibility=0).save()
+        faed_logo_kml(path + "a1", "http://" + app_ip +
+                      "/static/img/CataloniaSmartDroneS.png", 0, 0, 0.05)
+        Kml(name="a1.kml", url=path + "a1" + ".kml", visibility=0).save()
+        faed_logo_kml(path + "a2", "http://" + app_ip +
+                      "/static/img/lleidadrone-lab-logo.png", 0, 0.05, 0.05)
+        Kml(name="a2.kml", url=path + "a2" + ".kml", visibility=0).save()
+        faed_logo_kml(path + "a3", "http://" + app_ip +
+                      "/static/img/logo-liquidgalaxylab.png", 0, 0.10, 0.05)
+        Kml(name="a3.kml", url=path + "a3" + ".kml", visibility=0).save()
+        faed_logo_kml(path + "a4", "http://" + app_ip +
+                      "/static/img/pcital-logo.jpg", 0, 0.15, 0.05)
+        Kml(name="a4.kml", url=path + "a4" + ".kml", visibility=0).save()
+        faed_logo_kml(path + "a5", "http://" + app_ip +
+                      "/static/img/hemav-academics.png", 0, 0.20, 0.05)
+        Kml(name="a5.kml", url=path + "a5" + ".kml", visibility=0).save()

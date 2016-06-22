@@ -5,6 +5,7 @@ import json
 
 from django.contrib.gis.measure import D
 from django.contrib.gis.geos.point import Point
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
@@ -139,6 +140,7 @@ def submit_styleurl(request):
     return render(request, 'styleurl_form.html', {'form': form})
 
 
+@csrf_exempt
 def submit_droppoint(request):
     if request.method == 'POST':
         form = forms.DropPointForm(request.POST)
