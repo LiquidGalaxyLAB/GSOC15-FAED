@@ -22,22 +22,45 @@ Prerequisites
 - [ROS](http://www.ros.org/)
 - [MAVLink](http://qgroundcontrol.org/mavlink/start)
 
-Getting Started
----------------
+## Installation
 
-The easiest way to get started is to clone the repository:
+Get the latest git version:
 
-```bash
-# Get the latest snapshot
+```
 git clone https://github.com/LiquidGalaxyLAB/FAED.git
+```
+
+Main directory: `faed_management_tool`
+
+### Install dependencies
+
+```
 cd FAED/faed_management_tool
-./startup.sh
 pip install -r requirements.txt 
 
 ```
 
-Then, in order to install GeoDjango dependencies (they do not have a 'pip' command), visit their [website](https://docs.djangoproject.com/en/1.8/ref/contrib/gis/install/) and follow the given instructions.
+## How to run
 
+### Environment variables
+
+Get maps api key from [Google developers](https://developers.google.com/)
+Get weather api key from [Openweathermap](http://openweathermap.org/)
+
+```
+export MAPS_API_KEY=<API_KEY>
+export WEATHER_API_KEY=<API_KEY>
+```
+
+### Run server
+
+```
+python manage.py runfaed <galaxy_ip> <server_ip>
+```
+
+### Exit server
+
+Close terminal
 
 License
 -------

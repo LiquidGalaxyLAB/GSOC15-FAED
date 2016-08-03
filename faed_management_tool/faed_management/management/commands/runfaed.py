@@ -84,8 +84,8 @@ class Command(BaseCommand):
         self.create_hangars(path)
         self.create_droppoints(path)
         self.create_logo(path, app_ip)
-        self.stdout.write("Creating Weather Kml...")
-        generate_weather(BASE_DIR + "/faed_management/static/kml/")
+        # self.stdout.write("Creating Weather Kml...")
+        # generate_weather(BASE_DIR + "/faed_management/static/kml/")
         self.stdout.write("KMLs done")
 
     def create_hangars(self, path):
@@ -122,20 +122,8 @@ class Command(BaseCommand):
         self.stdout.write("Creating Logo Kml...")
         name = "faed_logo"
         faed_logo_kml(path + name, "http://" + app_ip +
-                      "/static/img/static_icon.png", 1, 1, 0.15)
+                      "/static/img/static_icon.png", 1, 1, 0.2, 0.15)
         Kml(name=name + ".kml", url=path + name + ".kml", visibility=0).save()
-        faed_logo_kml(path + "a1", "http://" + app_ip +
-                      "/static/img/CataloniaSmartDroneS.png", 0, 0, 0.05)
-        Kml(name="a1.kml", url=path + "a1" + ".kml", visibility=0).save()
-        faed_logo_kml(path + "a2", "http://" + app_ip +
-                      "/static/img/lleidadrone-lab-logo.png", 0, 0.05, 0.05)
-        Kml(name="a2.kml", url=path + "a2" + ".kml", visibility=0).save()
-        faed_logo_kml(path + "a3", "http://" + app_ip +
-                      "/static/img/logo-liquidgalaxylab.png", 0, 0.10, 0.05)
-        Kml(name="a3.kml", url=path + "a3" + ".kml", visibility=0).save()
-        faed_logo_kml(path + "a4", "http://" + app_ip +
-                      "/static/img/pcital-logo.jpg", 0, 0.15, 0.05)
-        Kml(name="a4.kml", url=path + "a4" + ".kml", visibility=0).save()
-        faed_logo_kml(path + "a5", "http://" + app_ip +
-                      "/static/img/hemav-academics.png", 0, 0.20, 0.05)
-        Kml(name="a5.kml", url=path + "a5" + ".kml", visibility=0).save()
+        faed_logo_kml(path + "logos", "http://" + app_ip +
+                      "/static/img/logos.png", 0, 0, 0.2, 0.3)
+        Kml(name="logos.kml", url=path + "logos.kml", visibility=0).save()

@@ -71,7 +71,7 @@ def manage_kml(filename, url, refresh_time):
 '''
 
 
-def faed_logo_kml(filename, url, p1, p2, size):
+def faed_logo_kml(filename, url, p1, p2, sizex, sizey):
     with open(filename + ".kml", "w") as kml_file:
         kml_file.write(
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -87,8 +87,8 @@ def faed_logo_kml(filename, url, p1, p2, size):
             "yunits='fraction'/>\n" +
             "\t\t\t<rotationXY x='0' y='0' xunits='fraction' " +
             "yunits='fraction'/>\n" +
-            "\t\t\t<size x='0.2' y='" + str(size) + "' xunits='fraction' " +
-            "yunits='fraction'/>\n" +
+            "\t\t\t<size x='" + str(sizex) + "' y='" + str(sizey) +
+            "' xunits='fraction' yunits='fraction'/>\n" +
             "\t\t</ScreenOverlay>\n" +
             "\t</Document>\n" +
             "</kml>")

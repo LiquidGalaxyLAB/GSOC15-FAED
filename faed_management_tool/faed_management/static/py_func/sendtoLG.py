@@ -16,7 +16,7 @@ def read_file():
 
 def sync_kmls_to_galaxy(emergency=False):
     file_path = "/tmp/kml/kmls.txt"
-    file_path_slave = "/tmp/kml/kmls_slave.txt"
+    file_path_slave = "/tmp/kml/kmls_4.txt"
     server_path = "/var/www/html"
     if not emergency:
         # os.system(
@@ -56,14 +56,14 @@ def sync_kmls_file():
         file.write("http://" + str(ip_server)[0:(len(ip_server) - 1)] +
                    ":8000/static/kml/" + i.name + "\n")
     file.close()
-    sync_kmls_slave_file()
+    sync_kmls_4_file()
 
 
-def sync_kmls_slave_file():
+def sync_kmls_4_file():
     ip_server = get_server_ip()
-    os.system("rm /tmp/kml/kmls_slave.txt")
-    os.system("touch /tmp/kml/kmls_slave.txt")
-    file = open("/tmp/kml/kmls_slave.txt", 'w')
+    os.system("rm /tmp/kml/kmls_4.txt")
+    os.system("touch /tmp/kml/kmls_4.txt")
+    file = open("/tmp/kml/kmls_4.txt", 'w')
     for i in Kml.objects.filter(visibility=0):
         file.write("http://" + str(ip_server)[0:(len(ip_server) - 1)] +
                    ":8000/static/kml/" + i.name + "\n")

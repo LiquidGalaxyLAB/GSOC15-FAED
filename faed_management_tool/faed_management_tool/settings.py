@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # We need to export our API key to environment
 # Api Key obtained in openweathermap.org
 WEATHER_API_KEY = os.environ['WEATHER_API_KEY']
+MAPS_API_KEY = os.environ['MAPS_API_KEY']
 
 # Application definition
 
@@ -51,8 +52,8 @@ INSTALLED_APPS = (
 )
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGE_SIZE': 10
+    'DEFAULT_PERMISSION_CLASSES': [],
+    'PAGE_SIZE': 1000
 }
 
 MIDDLEWARE_CLASSES = (

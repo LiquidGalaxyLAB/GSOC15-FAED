@@ -18,6 +18,8 @@ from faed_management.static.py_func.weather import can_fly, generate_weather
 
 from faed_management.static.py_func.sendtoLG import \
     get_server_ip, sync_kmls_file, sync_kmls_to_galaxy
+
+from faed_management_tool.settings import MAPS_API_KEY
 from serializers import HangarSerializer, DropPointSerializer, \
     MeteoStationSerializer
 from faed_management.models import Hangar, DropPoint, MeteoStation, StyleURL, \
@@ -451,7 +453,8 @@ def refresh_kml(request):
 
 
 def base(request):
-    return render(request, 'index.html')
+    print MAPS_API_KEY
+    return render(request, 'index.html', {'maps_key': MAPS_API_KEY})
 
 
 # Helpers
