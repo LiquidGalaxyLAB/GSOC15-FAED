@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd /home/lg/Desktop/lglab/gsoc15/FAED/faed_management_tool
+source ~/.virtualenvs/faed/bin/activate
+python manage.py runfaed $1 $2
+

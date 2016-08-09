@@ -22,46 +22,42 @@ Prerequisites
 - [ROS](http://www.ros.org/)
 - [MAVLink](http://qgroundcontrol.org/mavlink/start)
 
-## Installation
 
-Get the latest git version:
+###1. Install packages:
+```
+apt-get install git python-pip ssh sshpass
+pip install virtualenvwrapper
+```
 
+###2. Get the latest git version and go inside:
 ```
 git clone https://github.com/LiquidGalaxyLAB/FAED.git
 ```
 
-Main directory: `faed_management_tool`
-
-### Install dependencies
-
+###3. Create environment and install dependencies:
 ```
+mkvirtualenv faed
 cd FAED/faed_management_tool
-pip install -r requirements.txt 
-
+pip install -r requeriments.txt
 ```
 
-## How to run
-
-### Environment variables
+###4. Export environment variables
 
 Get maps api key from [Google developers](https://developers.google.com/)
 Get weather api key from [Openweathermap](http://openweathermap.org/)
 
 ```
-export MAPS_API_KEY=<API_KEY>
-export WEATHER_API_KEY=<API_KEY>
+echo 'export MAPS_API_KEY=<API_KEY>
+echo 'export WEATHER_API_KEY=<API_KEY>
 ```
 
-### Run server
-
+###5. Run server
 ```
 python manage.py runfaed <galaxy_ip> <server_ip>
 ```
 
-### Exit server
+Or
 
-Close terminal
-
-License
--------
- 
+```
+faed-start <galaxy_ip> <server_ip>
+```
