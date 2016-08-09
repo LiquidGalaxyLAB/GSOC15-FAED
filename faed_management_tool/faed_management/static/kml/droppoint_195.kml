@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Placemark>
+		<name>DP161</name>
+		<visibility>1</visibility>
+		<description>Passeig de IOnze de Setembre25192 Lerida, Lleida</description>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>http://maps.google.com/mapfiles/kml/pal4/icon28.png</href>
+				</Icon>
+			</IconStyle>
+			<LineStyle>
+				<width>2</width>
+			</LineStyle>
+		</Style>
+		<Point>
+			<extrude>1</extrude>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>0.61002,41.609964,200.0</coordinates>
+		</Point>
+	</Placemark>
+</kml>

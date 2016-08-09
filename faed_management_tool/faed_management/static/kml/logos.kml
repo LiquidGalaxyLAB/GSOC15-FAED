@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<ScreenOverlay>
+			<Icon>
+				<href>http://10.160.102.72:8000/static/img/logos.png</href>
+			</Icon>
+			<overlayXY x='0' y='0' xunits='fraction' yunits='fraction'/>
+			<screenXY x='0' y='0' xunits='fraction' yunits='fraction'/>
+			<rotationXY x='0' y='0' xunits='fraction' yunits='fraction'/>
+			<size x='0.2' y='0.3' xunits='fraction' yunits='fraction'/>
+		</ScreenOverlay>
+	</Document>
+</kml>

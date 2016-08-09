@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<Style id="Red">
+			<LineStyle>
+				<width>1.5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>0ff000000</color>
+			</PolyStyle>
+		</Style>
+		<Placemark>
+			<name>Universitat Rovira i Virgili</name>
+			<description>Universitat Rovira i Virgili</description>
+			<styleUrl>#Red</styleUrl>
+			<Polygon>
+				<extrude>1</extrude>
+				<altitudeMode>relativeToGround</altitudeMode>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							1.248249,41.134082,200.0
+							1.248249,41.134182,200.0
+							1.248349,41.134182,200.0
+							1.248349,41.134082,200.0
+							1.248249,41.134082,200.0
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+	</Document>
+</kml>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<Style id="Red">
+			<LineStyle>
+				<width>1.5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>0ff000000</color>
+			</PolyStyle>
+		</Style>
+		<Placemark>
+			<name>Poligons</name>
+			<description>Poligons de Tarragona</description>
+			<styleUrl>#Red</styleUrl>
+			<Polygon>
+				<extrude>1</extrude>
+				<altitudeMode>relativeToGround</altitudeMode>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							1.2264363,41.113403,200.0
+							1.2264363,41.113503,200.0
+							1.2265363,41.113503,200.0
+							1.2265363,41.113403,200.0
+							1.2264363,41.113403,200.0
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+	</Document>
+</kml>

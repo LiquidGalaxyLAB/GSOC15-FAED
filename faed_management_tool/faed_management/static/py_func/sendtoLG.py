@@ -75,9 +75,6 @@ def get_ip():
 
 
 def get_server_ip():
-    p = subprocess.Popen(
-        "ifconfig eth0 | grep 'inet:' | cut -d: -f2 | awk '{print $1}'",
-        shell=True,
-        stdout=subprocess.PIPE)
-    ip_server = p.communicate()[0]
-    return ip_server
+    f = os.popen("hostname -I")
+    data = f.read().strip() + ' '
+    return data

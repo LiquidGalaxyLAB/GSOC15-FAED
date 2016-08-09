@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Placemark>
+		<name>DP222</name>
+		<visibility>1</visibility>
+		<description>Carrer Varis-Ciutat, 2043006 Tarragona</description>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>http://maps.google.com/mapfiles/kml/pal4/icon28.png</href>
+				</Icon>
+			</IconStyle>
+			<LineStyle>
+				<width>2</width>
+			</LineStyle>
+		</Style>
+		<Point>
+			<extrude>1</extrude>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>1.237519,41.110169,200.0</coordinates>
+		</Point>
+	</Placemark>
+</kml>

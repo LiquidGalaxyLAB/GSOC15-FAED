@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<Style id="Red">
+			<LineStyle>
+				<width>1.5</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>0ff000000</color>
+			</PolyStyle>
+		</Style>
+		<Placemark>
+			<name>Torreforta</name>
+			<description>Zona Alta</description>
+			<styleUrl>#Red</styleUrl>
+			<Polygon>
+				<extrude>1</extrude>
+				<altitudeMode>relativeToGround</altitudeMode>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							1.212183,41.119676,200.0
+							1.212183,41.119776,200.0
+							1.212283,41.119776,200.0
+							1.212283,41.119676,200.0
+							1.212183,41.119676,200.0
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+	</Document>
+</kml>

@@ -3,7 +3,7 @@
 	<Document>
 		<ScreenOverlay>
 			<Icon>
-				<href>http://10.160.100.46:8000/static/img/static_icon.png</href>
+				<href>http://10.160.102.72:8000/static/img/static_icon.png</href>
 			</Icon>
 			<overlayXY x='0' y='1' xunits='fraction' yunits='fraction'/>
 			<screenXY x='0' y='1' xunits='fraction' yunits='fraction'/>

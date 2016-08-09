@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Placemark>
+		<name>DP190</name>
+		<visibility>1</visibility>
+		<description>Carrer Palauet, 117-11925001 Lleida</description>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>http://maps.google.com/mapfiles/kml/pal4/icon28.png</href>
+				</Icon>
+			</IconStyle>
+			<LineStyle>
+				<width>2</width>
+			</LineStyle>
+		</Style>
+		<Point>
+			<extrude>1</extrude>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>0.648555,41.610445,200.0</coordinates>
+		</Point>
+	</Placemark>
+</kml>

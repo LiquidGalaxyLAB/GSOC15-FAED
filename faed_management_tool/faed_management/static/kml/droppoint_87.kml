@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Placemark>
+		<name>DP54</name>
+		<visibility>1</visibility>
+		<description>Carrer la Fusta 3225191 Lleida</description>
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>http://maps.google.com/mapfiles/kml/pal4/icon28.png</href>
+				</Icon>
+			</IconStyle>
+			<LineStyle>
+				<width>2</width>
+			</LineStyle>
+		</Style>
+		<Point>
+			<extrude>1</extrude>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>0.6591,41.620688,200.0</coordinates>
+		</Point>
+	</Placemark>
+</kml>
