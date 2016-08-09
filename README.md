@@ -47,17 +47,17 @@ Get maps api key from [Google developers](https://developers.google.com/)
 Get weather api key from [Openweathermap](http://openweathermap.org/)
 
 ```
-echo 'export MAPS_API_KEY=<API_KEY>
-echo 'export WEATHER_API_KEY=<API_KEY>
+echo 'export MAPS_API_KEY=<API_KEY>' >> ~/.virtualenvs/faed/bin/activate
+echo 'export WEATHER_API_KEY=<API_KEY>' >> ~/.virtualenvs/faed/bin/activate
 ```
 
 ###5. Run server
 ```
-python manage.py runfaed <galaxy_ip> <server_ip>
+faed-start <galaxy_ip> <server_ip>
 ```
 
 Or
 
 ```
-faed-start <galaxy_ip> <server_ip>
+python manage.py runfaed <galaxy_ip> <server_ip>
 ```
