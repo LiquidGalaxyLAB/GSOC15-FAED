@@ -39,6 +39,7 @@ git clone https://github.com/LiquidGalaxyLAB/FAED.git
 mkvirtualenv faed
 cd FAED/faed_management_tool
 pip install -r requeriments.txt
+apt-get install libgeos-3.5.0
 ```
 
 ###4. Export environment variables
