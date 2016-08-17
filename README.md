@@ -42,6 +42,10 @@ pip install -r requeriments.txt
 apt-get install libgeos-3.5.0
 ```
 
+In order to install GEOS libraries, follow the next steps:
+
+[Django install geolibs GEOS](https://docs.djangoproject.com/es/1.10/ref/contrib/gis/install/geolibs/#geos)
+
 ###4. Export environment variables
 
 Get maps api key from [Google developers](https://developers.google.com/)
