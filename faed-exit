@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 killall python
-sshpass -p 'lqgalaxy' ssh lg@$1 \"echo '' > /var/www/html/kmls.txt\"
-sshpass -p 'lqgalaxy' ssh lg@$1 \"echo '' > /var/www/html/kmls_4.txt\"
+sshpass -p 'lqgalaxy' ssh lg@$1 "echo '' > /var/www/html/kmls.txt"
+sshpass -p 'lqgalaxy' ssh lg@$1 "echo '' > /var/www/html/kmls_4.txt"
