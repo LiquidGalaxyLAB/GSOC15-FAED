@@ -55,7 +55,7 @@ class Command(BaseCommand):
                 self.clear_databases()
                 # Creating the KMl files with the information of the Database
                 self.create_base_kml(app_ip, path)
-                os.system("python manage.py runserver " + app_ip)
+                os.system("python manage.py runserver {ip}".format(ip=app_ip))
             else:
                 self.stdout.write(
                     self.style.error(
@@ -110,7 +110,6 @@ class Command(BaseCommand):
         self.stdout.write("Creating Droppoints Kml...")
         dp = []
         for item in DropPoint.objects.all():
-            print item.description
             name = "droppoint_" + str(item.id) + ".kml"
             create_droppoint_marker(item, path + name)
             dp.append(name)
