@@ -5,6 +5,7 @@ from kmls_management.models import Kml
 from kmls_management.kml_generator import manage_kml, weather_info
 
 lleida = "3118514"
+ACCEPTED_WEATHER_CODES = [800, 801, 802, 803, 804]
 
 
 def get_weather(city_id, units):
@@ -36,12 +37,14 @@ def can_fly():
         url = 'http://api.openweathermap.org/data/2.5/weather'
         response = requests.get(url=url, params=params)
         data = json.loads(response.text)
-        if data['wind']['speed'] >= 10.0 or (data['rain']):
-            print data['wind']['speed']
-            print data['rain']
-            return False
-        else:
-            return True
+        available = True
+        if "wind" in data:
+            if "speed" in data["wind"]:
+                if data['wind']['speed'] >= 10.0:
+                    available = False
+        if data["weather"][0]["id"] not in ACCEPTED_WEATHER_CODES:
+            available = False
+        return available
     except KeyError:
         pass
 
