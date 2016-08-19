@@ -33,7 +33,7 @@ def generate_weather(path):
 
 def can_fly():
     try:
-        params = {'q': '3118514', 'units': 'metric', 'APPID': WEATHER_API_KEY}
+        params = {'id': '3118514', 'units': 'metric', 'APPID': WEATHER_API_KEY}
         url = 'http://api.openweathermap.org/data/2.5/weather'
         response = requests.get(url=url, params=params)
         data = json.loads(response.text)
